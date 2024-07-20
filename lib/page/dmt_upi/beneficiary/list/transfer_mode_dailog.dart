@@ -137,7 +137,7 @@ class _UpiTransferAmountDialogState extends State<UpiTransferAmountDialog> with 
     }
     AppPreference appPreference = Get.find();
     var minAmount = 100 ;
-    var maxAmount = double.parse(widget.senderInfo.perentry_limit!);
+    var maxAmount = double.parse(widget.senderInfo.perentry_limit!)-1.0;
 
     var enteredAmountInDouble = double.parse(value);
 

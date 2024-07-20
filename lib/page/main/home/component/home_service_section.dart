@@ -184,7 +184,7 @@ List<HomeServiceItem> _homeServiceList(UserDetail user) {
 
   if (isUpi) {
     itemList.add(HomeServiceItem(
-        "Upi Transfer", "price", HomeServiceType.upiTransfer));
+        "Upi Transfer", "upi", HomeServiceType.upiTransfer));
   }
 
   if (isMatm || isMatmCredo || isMposCredo) {

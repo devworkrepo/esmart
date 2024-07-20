@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -6,9 +5,6 @@ import 'package:esmartbazaar/data/repo/upi_repo.dart';
 import 'package:esmartbazaar/data/repo_impl/upi_repo_impl.dart';
 import 'package:esmartbazaar/widget/common.dart';
 import 'package:esmartbazaar/widget/dialog/status_dialog.dart';
-import 'package:esmartbazaar/data/repo/dmt_repo.dart';
-import 'package:esmartbazaar/data/repo_impl/dmt_repo_impl.dart';
-import 'package:esmartbazaar/page/dmt/dmt.dart';
 import 'package:esmartbazaar/page/exception_page.dart';
 
 class UpiSenderAddController extends GetxController {

@@ -159,6 +159,6 @@ class UpiScanAndPayController extends GetxController with TransactionHelperMixin
       return "Insufficient available balance!";
     }
 
-    return FormValidatorHelper.amount(value,minAmount: 100,maxAmount: int.parse(sender.perentry_limit.toString()));
+    return FormValidatorHelper.amount(value,minAmount: 100,maxAmount: int.parse(sender.perentry_limit.toString())-1);
   }
 }

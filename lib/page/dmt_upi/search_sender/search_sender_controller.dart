@@ -1,4 +1,5 @@
 import 'package:esmartbazaar/page/dmt_upi/beneficiary/add/qr_view.dart';
+import 'package:esmartbazaar/util/permission_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:esmartbazaar/data/repo/upi_repo.dart';
@@ -192,14 +193,19 @@ class UpiSearchSenderController extends GetxController {
           ? "Remitter Mobile Number"
           : "Beneficiary upi id";
 
-  getInputTextFielMaxLegth() =>
+  getInputTextFieldMaxLegth() =>
       (searchTypeObs.value == UpiRemitterSearchType.mobile) ? 10 : 20;
 
-  void gotoScanAndPagePage(SenderInfo sender, String mobile) {
-    Get.to(()=>const UpiScanPayPage(),arguments: {
-      "sender" : sender,
-      "mobile" : mobile
-    });
+  void gotoScanAndPagePage(SenderInfo sender, String mobile) async {
+
+    var result = await PermissionHelper.cameraPermission();
+    if(result){
+      Get.to(()=>const UpiScanPayPage(),arguments: {
+        "sender" : sender,
+        "mobile" : mobile
+      });
+    }
+
   }
 }
 

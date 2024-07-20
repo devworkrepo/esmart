@@ -178,7 +178,6 @@ class _BuildListItem extends StatelessWidget {
           ListTitleValue(
               title: "Beneficiary Name",
               value: report.beneficiaryName.toString()),
-          ListTitleValue(title: "IFSC Code", value: report.ifscCode.toString()),
           ListTitleValue(
               title: "UPI Id", value: report.accountNumber.toString()),
           ListTitleValue(

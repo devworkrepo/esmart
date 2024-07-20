@@ -85,7 +85,7 @@ class UpiTransactionBankDetailWidget extends GetView<UpiTransactionController> {
                       height: 8,
                     ),
                     Text(
-                      "IMPS",
+                      "UPI",
                       style: Get.textTheme.subtitle2
                           ?.copyWith( color: Colors.white),
                     ),

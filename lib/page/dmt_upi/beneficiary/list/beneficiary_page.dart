@@ -121,7 +121,7 @@ class UpiBeneficiaryListPage extends GetView<UpiBeneficiaryListController> {
       delegate: SliverChildBuilderDelegate(
         (_, int index) {
           return Obx(() {
-            controller.beneficiaryListObs.value;
+
             if (controller.beneficiaryListObs.isEmpty) {
               return Center(
                   child: Padding(
@@ -133,7 +133,7 @@ class UpiBeneficiaryListPage extends GetView<UpiBeneficiaryListController> {
               ));
             } else {
               var bottomPadding = 1.0;
-              if (index == controller.beneficiaryListObs.value.length - 1) {
+              if (index == controller.beneficiaryListObs.length - 1) {
                 bottomPadding = 120.0;
               }
 

@@ -179,7 +179,7 @@ class UpiSenderOptionDialog extends StatelessWidget {
             svgName: "qr_code",
         ),
         _BaseOption(
-            title: "Beneficiary Page",
+            title: "Beneficiary List",
             onClick: onBeneficiaryPage,
             svgName: "virtual_account"),
       ],

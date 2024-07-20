@@ -14,6 +14,7 @@ class LocalAuthService {
   }
 
   static Future<bool> authenticate() async {
+
     if (await isAvailable()) {
       try {
         var isAuthenticate = await LocalAuthentication().authenticate(

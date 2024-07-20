@@ -219,6 +219,7 @@ class UpiBeneficiaryListController extends GetxController {
   }
 
   onSearchChange(String value) {
+
     List<Beneficiary> results = beneficiaryList;
     if (value.isEmpty) {
       results = beneficiaryList;
@@ -226,9 +227,9 @@ class UpiBeneficiaryListController extends GetxController {
       results = beneficiaryList
           .where((item) =>
               item.name!.toLowerCase().contains(value.toLowerCase()) ||
-              item.accountNumber!.toLowerCase().contains(value.toLowerCase())||
-              item.bankName!.toLowerCase().contains(value.toLowerCase()))
-          .toList();
+              item.accountNumber!.toLowerCase().contains(value.toLowerCase())
+
+      ).toList();
 
       AppUtil.logger("value : $value");
       AppUtil.logger(results);

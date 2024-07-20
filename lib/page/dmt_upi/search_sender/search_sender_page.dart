@@ -66,7 +66,7 @@ class UpiSenderSearchPage extends GetView<UpiSearchSenderController> {
                   height: 8,
                 ),
                Obx(()=> AppTextField(
-                 maxLength: controller.getInputTextFielMaxLegth(),
+                 maxLength: controller.getInputTextFieldMaxLegth(),
                  inputType: (controller.searchTypeObs.value == UpiRemitterSearchType.account) ? TextInputType.text : TextInputType.number,
                  label: controller.getInputTextFieldLabel(),
                  onChange: controller.onMobileChange,

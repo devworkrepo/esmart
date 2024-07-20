@@ -154,7 +154,7 @@ class UpiBeneficiaryAddPage extends GetView<UpiBeneficiaryAddController> {
                             label: "Upi Id without @",
                             validator: (value) =>
                                 FormValidatorHelper.normalValidation(value,
-                                    minLength: 10),
+                                    minLength: 5),
                             controller: controller.upiIdController),
                         const SizedBox(
                           height: 5,

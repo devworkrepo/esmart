@@ -1,0 +1,4 @@
+class TestResponse {
+  TestResponse._();
+
+}

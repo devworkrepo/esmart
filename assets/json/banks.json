@@ -1,0 +1,27 @@
+{
+  "banks": [
+    {
+      "acc_name": "AKASH KUMAR DAS",
+      "acc_no": "071801515529",
+      "addeddate": "4/23/2022 12:49:08 PM",
+      "bank_name": "ICICI Bank",
+      "bank_status": "Accepted",
+      "cancel_cheque": "Cheque_77659867d.jpg",
+      "ifsc": "ICIC0000718",
+      "remark": "fa_JMiGVuVx9HYB0w TESTING updated by Anjali"
+    },
+    {
+      "acc_name": "Akash Kumar Das and",
+      "acc_no": "3618506719",
+      "addeddate": "5/31/2022 4:40:53 PM",
+      "bank_name": "Central Bank of India",
+      "bank_status": "Declined",
+      "cancel_cheque": "3618506719.jpg",
+      "ifsc": "AJJ38838383",
+      "remark": " Name not matched  updated by vishal.kumar"
+    }
+  ],
+  "code": 2,
+  "message": "Success !",
+  "status": "Success"
+}

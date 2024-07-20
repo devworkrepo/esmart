@@ -1,0 +1,90 @@
+name: esmartbazaar
+description: Smart Bazaar a money response based fintech application service
+
+version: 1.0.03+7
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  get: ^4.6.6
+  shared_preferences: ^2.0.7
+  device_info: ^2.0.2
+  freezed: ^0.14.5
+  freezed_annotation:
+  dio: ^4.0.0
+  encrypt: ^5.0.1
+  font_awesome_flutter: ^9.1.0
+  pretty_dio_logger: ^1.1.1
+  connectivity_plus: ^1.1.0
+  screenshot: ^2.1.0
+  share: ^2.0.4
+  path_provider: ^2.0.6
+  lottie: ^1.2.1
+  dropdown_search: ^5.0.6
+  cupertino_icons: ^1.0.2
+  geolocator: ^8.0.0
+  app_settings: ^4.1.6
+  image_picker: ^0.8.5
+  image_cropper: ^1.4.1
+  intl: ^0.17.0
+  flutter_image_compress: ^2.1.0
+  infinite_scroll_pagination: ^3.1.0
+  qr_flutter: ^4.1.0
+  image_gallery_saver: ^2.0.3
+  permission_handler: ^8.3.0
+  countdown_progress_indicator: ^0.1.2
+  dotted_border: ^2.0.0+2
+  #flutter_html_to_pdf: ^0.7.0
+  open_file: ^3.2.1
+  number_to_words: ^1.0.0
+
+  in_app_update: ^3.0.0
+  #upgrader: ^4.1.2
+  #new_version: ^0.3.0
+  #qr_code_scanner: ^0.6.1
+  flutter_svg: ^1.0.3
+  dart_ipify: ^1.1.1
+  webview_flutter: ^3.0.1
+  local_auth: ^1.1.11
+  carousel_slider: ^4.0.0
+  smooth_page_indicator: ^1.0.0+2
+  cached_network_image: ^3.3.0
+
+  #safe_device: ^1.1.1
+  #palestine_trusted_device: ^0.1.1
+
+  url_launcher: ^6.1.2
+  #firebase_crashlytics: ^2.6.2
+  #cloud_firestore: ^3.1.6
+  #firebase_core: ^1.18.0
+  flutter_ringtone_player: ^3.2.0
+  animated_widgets: ^1.1.0
+  #htmltopdfwidgets: ^0.0.9+1
+  flutter_native_html_to_pdf: ^1.0.1
+  qr_code_scanner: ^1.0.1
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner:
+  flutter_lints: ^1.0.0
+  flutter_native_splash: ^2.3.6
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - assets/image/
+    - assets/svg/
+    - assets/lottie/
+    - assets/json/
+    - assets/html/
+    - assets/sound/
+    - assets/icon/
+    - assets/upi_icons/

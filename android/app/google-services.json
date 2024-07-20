@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "914539931751",
+    "project_id": "spay-india",
+    "storage_bucket": "spay-india.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914539931751:android:7a6a635dc7bc0dea1c0cc2",
+        "android_client_info": {
+          "package_name": "app.esmartbazaar.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhiC2pDqZTsOAN6CH5KIq8a8DZvWFwwOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

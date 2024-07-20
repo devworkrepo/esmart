@@ -1,0 +1,4 @@
+enum AepsTransactionType {
+  cashWithdrawal,
+  balanceEnquiry,
+}

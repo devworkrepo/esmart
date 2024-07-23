@@ -32,8 +32,10 @@ class UpiScanAndPayController extends GetxController with TransactionHelperMixin
   AppPreference preference = Get.find();
 
 
+
   var qrResultObs = {
     "isScanned" : false,
+    "isVerified" : false,
     "name" : "",
     "upiId" : "",
   }.obs;
@@ -61,6 +63,7 @@ class UpiScanAndPayController extends GetxController with TransactionHelperMixin
     if(result == null) return;
     qrResultObs.value = {
       "isScanned" : true,
+      "isVerified" : false,
       "name" : result["name"].toString(),
       "upiId" : result["upiId"].toString(),
     };
@@ -69,9 +72,45 @@ class UpiScanAndPayController extends GetxController with TransactionHelperMixin
   proceedTransaction()  async {
     if(!formKey.currentState!.validate()) return;
 
-    _confirmDialog();
-
+    if(qrResultObs["isVerified"] == true){
+      _confirmDialog();
+    }
+    else{
+      _verifyAndPay();
+    }
   }
+
+
+  void _verifyAndPay() async{
+    try {
+      StatusDialog.progress();
+      final transactionNumberResult = await repo.fetchTransactionNumber();
+      final param = {
+        "beneid": "0",
+        "remitter_mobile": mobile,
+        "upiid": qrResultObs["upiId"],
+        "transno": transactionNumberResult.transactionNumber
+      };
+
+      final response = await repo.verifyAccount(param);
+      Get.back();
+      if (response.code == 1) {
+        qrResultObs.value = {
+          "isScanned" : true,
+          "isVerified" : true,
+          "name" : response.beneficiaryName.toString(),
+          "upiId" : qrResultObs["upiId"].toString(),
+        };
+       _confirmDialog();
+      } else {
+        StatusDialog.alert(title: response.message);
+      }
+    } catch (e) {
+      Get.back();
+      StatusDialog.alert(title: "Something went wrong!");
+    }
+  }
+
 
   _confirmDialog() {
     var widgetList = <ListTitleValue>[];
@@ -160,5 +199,14 @@ class UpiScanAndPayController extends GetxController with TransactionHelperMixin
     }
 
     return FormValidatorHelper.amount(value,minAmount: 100,maxAmount: int.parse(sender.perentry_limit.toString())-1);
+  }
+
+  getButtonText(){
+    if(qrResultObs["isVerified"] == true){
+      return "Proceed Transaction";
+    }
+    else {
+      return "Verify and Pay";
+    }
   }
 }

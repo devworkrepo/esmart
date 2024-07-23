@@ -102,20 +102,48 @@ class UpiScanPayPage extends GetView<UpiScanAndPayController> {
                     validator:(value)=> controller.amountValidation(value),),
 
 
+
+
                     MPinTextField(controller: controller.mpinController),
+
+                    if(controller.qrResultObs["isVerified"] == true) Align(
+                      alignment: Alignment.center,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 12,),
+                          const Text(
+                            "Verified Beneficiary Name",
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            controller.qrResultObs["name"].toString(),
+                            style: const TextStyle(
+                                color: Colors.green,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
                     const SizedBox(
                       height: 24,
                     ),
-                    Row(children: [
 
-                      const SizedBox(width: 8,),
-                      Expanded(
-                        flex: 2,
-                        child: AppButton(
-                            text: "Proceed Transaction",
-                            onClick: () => controller.proceedTransaction()),
-                      )
-                    ],)
+                    AppButton(
+                        text: controller.getButtonText(),
+                        onClick: () => controller.proceedTransaction()),
+                    if(controller.qrResultObs["isVerified"] == false) const Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Text("verification charge will be apply.",style: TextStyle(
+                          fontSize: 10
+                        ),),
+                      ),
+                    )
                   ],
                 ),
               ),

@@ -258,8 +258,8 @@ class HomeController extends GetxController {
     switch (item.homeServiceType) {
       case HomeServiceType.aeps:
         {
-          //todo Get.toNamed(AppRoute.aepsTramoPage, arguments: false);
-          Get.toNamed(AppRoute.aepsFingPage, arguments: false);
+          Get.toNamed(AppRoute.aepsTramoPage, arguments: false);
+         // Get.toNamed(AppRoute.aepsFingPage, arguments: false);
 
         }
         // {

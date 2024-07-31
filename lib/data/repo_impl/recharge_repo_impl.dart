@@ -102,7 +102,7 @@ class RechargeRepoImpl extends RechargeRepo {
   @override
   Future<CreditCardPaymentResponse> makeCardPayment(
       data, CancelToken? cancelToken) async {
-    var response = await client.post("/PostCreditTransaction",
+    var response = await client.post("/PostCreditTransactionV2",
         data: data, cancelToken: cancelToken);
     return CreditCardPaymentResponse.fromJson(response.data);
   }

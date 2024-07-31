@@ -642,4 +642,26 @@ class CardTextField extends StatelessWidget {
         },
         controller: controller);
   }
+
+  bool validateCreditCardNumber(String input) {
+    input = input.replaceAll(RegExp(r'\s+'), '');
+    if (!RegExp(r'^[0-9]+$').hasMatch(input) || input.length < 13 || input.length > 19) {
+      return false;
+    }
+    int sum = 0;
+    bool alternate = false;
+
+    for (int i = input.length - 1; i >= 0; i--) {
+      int n = int.parse(input[i]);
+      if (alternate) {
+        n *= 2;
+        if (n > 9) {
+          n = (n % 10) + 1;
+        }
+      }
+      sum += n;
+      alternate = !alternate;
+    }
+    return (sum % 10 == 0);
+  }
 }

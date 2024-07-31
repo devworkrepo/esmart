@@ -30,17 +30,12 @@ class CreditCardController extends GetxController with TransactionHelperMixin, L
   var numberController = TextEditingController();
   var mobileController = TextEditingController();
   var nameController = TextEditingController();
-  var ifscCodeController = TextEditingController();
   var amountController = TextEditingController();
   var mpinController = TextEditingController();
   var initialResponseFetchedObs = false.obs;
-  var actionType = CreditCardActionType.fetch.obs;
-
-  late List<Bank> bankList;
   late List<String> typeList;
-  Bank? selectedBank;
   String selectedType = "";
-  late CreditCardLimitResponse creditCardLimitResponse;
+
 
   @override
   void onInit() {
@@ -54,13 +49,8 @@ class CreditCardController extends GetxController with TransactionHelperMixin, L
   _fetchInitialInfo() async {
     try {
       initialObs.value = const Resource.onInit();
-      var bankResponse = await repo.fetchCreditCardBank();
       var typeResponse = await repo.fetchCreditCardType();
-
-      bankList = bankResponse.banks;
       typeList = typeResponse.types!.map((e) => e.name ?? "").toList();
-
-      typeResponse.bankResponse = bankResponse;
       initialObs.value = Resource.onSuccess(typeResponse);
     } catch (e) {
       initialObs.value = Resource.onFailure(e);
@@ -76,9 +66,7 @@ class CreditCardController extends GetxController with TransactionHelperMixin, L
       return;
     }
 
-    if (actionType.value == CreditCardActionType.fetch) {
-      _fetchCreditLimit();
-    } else {
+
       Get.dialog(
           AmountConfirmDialogWidget(
               amount: amountController.text.toString(),
@@ -90,15 +78,14 @@ class CreditCardController extends GetxController with TransactionHelperMixin, L
                     title: "Mobile Number",
                     value: mobileController.text.toString()),
                 ListTitleValue(title: "Card Type", value: selectedType),
-                ListTitleValue(
-                    title: "Bank Name", value: selectedBank?.bankName ?? ""),
+
                 ListTitleValue(title: "User Name", value: nameController.text),
               ],
               onConfirm: () {
                 _fetchTransactionNumber();
               }),
           barrierDismissible: false);
-    }
+
   }
 
   _fetchTransactionNumber() async {
@@ -129,8 +116,6 @@ class CreditCardController extends GetxController with TransactionHelperMixin, L
         "cardno": aadhaarWithoutSymbol(numberController),
         "card_holdername": nameController.text,
         "card_type": selectedType,
-        "bankname": selectedBank?.bankName ?? "",
-        "ifsc": ifscCodeController.text,
         "latitude": position!.latitude.toString(),
         "longitude": position!.longitude.toString(),
       };
@@ -151,36 +136,14 @@ class CreditCardController extends GetxController with TransactionHelperMixin, L
     }
   }
 
-  _fetchCreditLimit() async {
-    try {
-      StatusDialog.progress();
-      var param = {
-        "mobileno": mobileController.text,
-        "cardno": aadhaarWithoutSymbol(numberController)
-      };
-      var response = await repo.fetchCreditLimit(param);
-      Get.back();
-      if (response.code == 1) {
-        creditCardLimitResponse = response;
-        actionType.value = CreditCardActionType.payment;
-        showSuccessSnackbar(
-            title: "Credit Limit", message: response.message ?? "");
-      } else {
-        showFailureSnackbar(
-            title: "Credit Limit", message: response.message ?? "");
-      }
-    } catch (e) {
-      Get.back();
-      Get.dialog(ExceptionPage(error: e));
-    }
-  }
+
+
 
   @override
   void dispose() {
     numberController.dispose();
     amountController.dispose();
     nameController.dispose();
-    ifscCodeController.dispose();
     mobileController.dispose();
     mpinController.dispose();
     if (cancelToken != null) {
@@ -193,4 +156,3 @@ class CreditCardController extends GetxController with TransactionHelperMixin, L
   }
 }
 
-enum CreditCardActionType { fetch, payment }

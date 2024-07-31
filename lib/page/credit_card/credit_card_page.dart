@@ -5,10 +5,10 @@ import 'package:esmartbazaar/widget/button.dart';
 import 'package:esmartbazaar/widget/image.dart';
 import 'package:esmartbazaar/widget/text_field.dart';
 import 'package:esmartbazaar/page/credit_card/credit_card_controller.dart';
-import 'package:esmartbazaar/page/credit_card/widget/card_info_widget.dart';
 import 'package:esmartbazaar/util/obx_widget.dart';
 import 'package:esmartbazaar/util/validator.dart';
 
+import '../../widget/common/amount_background.dart';
 import '../../widget/common/wallet_widget.dart';
 import '../../widget/drop_down.dart';
 
@@ -41,14 +41,10 @@ class CreditCardPage extends GetView<CreditCardController> {
                   children: [
                     Card(
                       child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: Column(
                           children: [
                             _buildTopSection(),
-                            Obx(() => (controller.actionType.value ==
-                                    CreditCardActionType.payment)
-                                ? const CardInfoWidget()
-                                : const SizedBox()),
                             const SizedBox(
                               height: 16,
                             ),
@@ -58,22 +54,18 @@ class CreditCardPage extends GetView<CreditCardController> {
                       ),
                     ),
                     _buildFormWidget(),
-                    Obx(() => (controller.actionType.value ==
-                            CreditCardActionType.payment)
-                        ? const WalletWidget()
-                        : const SizedBox()),
+                   const WalletWidget()
+
                   ],
                 ),
               ),
             ),
           ),
         ),
-        Obx(() => AppButton(
-              text: (controller.actionType.value == CreditCardActionType.fetch)
-                  ? "Fetch Credit Info"
-                  : "Pay Credit Bill",
+        AppButton(
+              text:  "Pay Credit Bill",
               onClick: controller.onProceed,
-            ))
+            )
       ],
     );
   }
@@ -83,7 +75,7 @@ class CreditCardPage extends GetView<CreditCardController> {
       children: [
         const AppCircleAssetPng(
           "assets/image/card.png",
-          size: 60,
+          size: 40,
           innerPadding: 8,
         ),
         Expanded(
@@ -98,10 +90,8 @@ class CreditCardPage extends GetView<CreditCardController> {
   }
 
   _buildFormWidget() {
-    return Obx(() {
-      var isEnable =
-          controller.actionType.value == CreditCardActionType.fetch;
 
+      var isEnable = true;
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -122,46 +112,38 @@ class CreditCardPage extends GetView<CreditCardController> {
                 label: "Card Holder Name",
                 validator: FormValidatorHelper.normalValidation,
               ),
+              SizedBox(height: 5,),
+              AppDropDown(
+                list: controller.typeList,
+                onChange: (value) {
+                  controller.selectedType = controller.typeList
+                      .firstWhere((element) => element == value);
+                },
+                selectedItem: (controller.selectedType.isNotEmpty)
+                    ? controller.selectedType
+                    : null,
+                label: "Select Card Type",
+              ),
             ],),
           ),),
          Card(child: Padding(
            padding: const EdgeInsets.all(16.0),
            child: Column(children: [
-             AppDropDown(
-               list: controller.typeList,
-               onChange: (value) {
-                 controller.selectedType = controller.typeList
-                     .firstWhere((element) => element == value);
-               },
-               selectedItem: (controller.selectedType.isNotEmpty)
-                   ? controller.selectedType
-                   : null,
-               label: "Select Card Type",
-             ),
-             AppDropDown(
-               list: controller.bankList.map((e) => e.bankName).toList(),
-               onChange: (value) {
-                 controller.selectedBank = controller.bankList
-                     .firstWhere((element) => element.bankName == value);
-                 controller.ifscCodeController.text =
-                     controller.selectedBank?.ifscCode ?? "";
-               },
-               selectedItem: (controller.selectedBank != null)
-                   ? controller.selectedBank!.bankName
-                   : null,
-               label: "Select Bank",
-             ),
-             AppTextField(
-               maxLength: 11,
-               controller: controller.ifscCodeController,
-               label: "IFSC Code",
-               validator: (value) =>
-                   FormValidatorHelper.normalValidation(value, minLength: 11),
-             ),
+
+             SizedBox(height: 12,),
+             AmountBackgroundWidget(
+                 child: Column(children: [
+                   AmountTextField(
+                       label: "Bill Amount",
+                       validator: (value) => FormValidatorHelper.amount(value,minAmount: 100,maxAmount: 500000),
+                       controller: controller.amountController),
+                   MPinTextField(controller: controller.mpinController)
+                 ],)),
+
            ],),
          ),)
         ],
       );
-    });
+
   }
 }

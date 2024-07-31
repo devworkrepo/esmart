@@ -1,3 +1,4 @@
+import 'package:esmartbazaar/res/color.dart';
 import 'package:flutter/material.dart';
 
 class AmountBackgroundWidget extends StatelessWidget {
@@ -8,8 +9,8 @@ class AmountBackgroundWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.grey[100]),
+          borderRadius: BorderRadius.circular(4),
+          color: AppColor.backgroundColor),
       padding: const EdgeInsets.all(8),
       child: child,
     );

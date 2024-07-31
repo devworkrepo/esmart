@@ -15,7 +15,6 @@ class CreditCardTypeResponse{
   late String status;
   late String message;
   List<CreditCardType>? types;
-  BankListResponse? bankResponse;
 
   CreditCardTypeResponse();
 

@@ -44,14 +44,12 @@ class CreditCardReceiptHtmlData{
                 <table width="100%">
                     <tr>
                         <td style="width: 180px;" valign="top">
-                            <img src="https://esmartbazaar.in/images/sb_logo.png" style="width: 150px;" />
+                            <img src="https://esmartbazaar.in/images/sb_logo.png" style="width: 120px;" />
                         </td>
                         <td colspan="2" align="center">
                             <h4>Credit Card Payment</h4>
                         </td>
-                        <td align="right" valign="top">
-                            <img src="https://esmartbazaar.in/images/esmartlogo.jpg" style="width: 100px" />
-                        </td>
+                    
                     </tr>
                     <tr>
                         <td colspan="4">

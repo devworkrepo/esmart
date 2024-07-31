@@ -1,7 +1,7 @@
 name: esmartbazaar
 description: Smart Bazaar a money response based fintech application service
 
-version: 1.0.06+10
+version: 1.0.07+11
 
 environment:
   sdk: '>=3.2.0 <4.0.0'

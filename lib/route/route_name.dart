@@ -82,6 +82,7 @@ class AppRoute {
   static const complainListPage = "/complaint-list-page";
 
   static const aepsEkycPage = "/aeps-kyc-page";
+  static const aepsFingEkycPage = "/aeps-kyc-fing-page";
   static const senderKycPage = "/sender-kyc-page";
   static const senderKycInfoPage = "/sender-kyc-info-page";
   static const aepsSettlementPage = "/settlement-page";

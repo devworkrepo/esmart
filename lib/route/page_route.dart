@@ -1,4 +1,5 @@
 import 'package:esmartbazaar/page/aeps/aeps_fing/aeps_page.dart';
+import 'package:esmartbazaar/page/aeps/aeps_fing/kyc/aeps_e_kyc_page.dart';
 import 'package:esmartbazaar/page/my_qr/my_qr_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -159,6 +160,9 @@ final getAllPages = [
   GetPage(
     name: AppRoute.aepsEkycPage,
     page: () => const AepsEKycPage(),
+  ),GetPage(
+    name: AppRoute.aepsFingEkycPage,
+    page: () => const AepsFingEKycPage(),
   ),
 
   GetPage(

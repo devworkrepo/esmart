@@ -50,25 +50,25 @@ class AepsFingRepoImpl extends AepsFingRepo {
 
   @override
   Future<CommonResponse> eKycAuthenticate(data) async {
-    var response = await client.post("/KycAuth", data: data);
+    var response = await client.post("/BioKycFing", data: data);
     return CommonResponse.fromJson(response.data);
   }
 
   @override
   Future<EKycResponse> eKycResendOtp(data) async {
-    var response = await client.post("/ResendKycOTP", data: data);
+    var response = await client.post("/ResendKycOTPFing", data: data);
     return EKycResponse.fromJson(response.data);
   }
 
   @override
   Future<EKycResponse> eKycSendOtp(data) async {
-    var response = await client.post("/SendKycOTP", data: data);
+    var response = await client.post("/SendKycOTPFing", data: data);
     return EKycResponse.fromJson(response.data);
   }
 
   @override
   Future<EKycResponse> eKycVerifyOtp(data) async {
-    var response = await client.post("/VerifyKycOTP", data: data);
+    var response = await client.post("/VerifyKycOTPFing", data: data);
     return EKycResponse.fromJson(response.data);
   }
 

@@ -7,6 +7,7 @@ object AppConstant {
     const val AEPS_SERVICE_METHOD_NAME = "launch_aeps_service"
     const val RD_SERVICE_SERIAL_NUMBER = "rd_service_serial_number"
     const val AEPS_TRAMO_RESULT_CODE = 1000
+    const val AEPS_COMMON_RESULT_CODE = 2000
     const val AEPS_AIRTEL_RESULT_CODE = 1400
     const val MATM_SERVICE_METHOD_NAME = "launch_matm_service"
     const val MATM_LAUNCH_RESULT_CODE = 1100

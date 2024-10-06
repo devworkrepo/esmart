@@ -257,21 +257,19 @@ class HomeController extends GetxController {
   onItemClick(HomeServiceItem item) {
     switch (item.homeServiceType) {
       case HomeServiceType.aeps:
-        {
-          Get.toNamed(AppRoute.aepsTramoPage, arguments: false);
-         // Get.toNamed(AppRoute.aepsFingPage, arguments: false);
 
+        {
+          Get.bottomSheet(AepsDialogWidget(
+            onFingPay: () {
+              Get.toNamed(AppRoute.aepsFingPage);
+
+            },
+            onTramo: () {
+              Get.toNamed(AppRoute.aepsTramoPage,arguments: false);
+
+            },
+          ));
         }
-        // {
-        //   Get.bottomSheet(AepsDialogWidget(
-        //     onAirtel: () {
-        //       Get.toNamed(AppRoute.aepsAirtelPage);
-        //     },
-        //     onTramo: () {
-        //       Get.toNamed(AppRoute.aepsTramoPage, arguments: false);
-        //     },
-        //   ));
-        // }
         break;
       case HomeServiceType.aadhaarPay:
         {

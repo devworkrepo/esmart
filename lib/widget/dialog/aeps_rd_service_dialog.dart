@@ -7,6 +7,7 @@ import 'package:esmartbazaar/widget/image.dart';
 import 'package:esmartbazaar/data/app_pref.dart';
 import 'package:esmartbazaar/util/mixin/dialog_helper_mixin.dart';
 
+
 class AepsRdServiceDialog extends StatelessWidget with DialogHelperMixin {
   AppPreference appPreference = Get.find();
 
@@ -15,7 +16,9 @@ class AepsRdServiceDialog extends StatelessWidget with DialogHelperMixin {
   late String selectRdService ;
 
   var mantraPackage = "com.mantra.rdservice";
+  var mantraL1Package = "com.mantra.mfs110.rdservice";
   var morphoPackage = "com.scl.rdservice";
+  var morphoL1Package = "com.idemia.l1rdservice";
   var startekPackage = "com.acpl.registersdk";
   var secuGenPackage = "com.secugen.rdservice";
 
@@ -45,7 +48,7 @@ class AepsRdServiceDialog extends StatelessWidget with DialogHelperMixin {
                 Expanded(
                   child: AppDropDown(
                     hideLabel: true,
-                    list: const ["MORPHO", "MANTRA", "STARTEK","SecuGen"],
+                    list: const ["MORPHO","MORPHO L1", "MANTRA","MANTRA L1", "STARTEK","SecuGen"],
                     onChange: (v) {
                       selectRdService = v;
                     },
@@ -60,25 +63,31 @@ class AepsRdServiceDialog extends StatelessWidget with DialogHelperMixin {
               height: 30,
             ),
             AppButton(text: "Proceed", onClick: () async{
-             await appPreference.setRdService(selectRdService);
+              await appPreference.setRdService(selectRdService);
 
-             String rdServicePackageUrl;
+              String rdServicePackageUrl;
 
-             if(selectRdService == "MORPHO"){
-              rdServicePackageUrl = morphoPackage;
-             }
-             else if (selectRdService == "MANTRA"){
-               rdServicePackageUrl = mantraPackage;
-             }
-             else if (selectRdService == "SecuGen"){
-               rdServicePackageUrl = secuGenPackage;
-             }
-             else {
-               rdServicePackageUrl = startekPackage;
-             }
+              if(selectRdService == "MORPHO"){
+                rdServicePackageUrl = morphoPackage;
+              }
+              else if (selectRdService == "MORPHO L1"){
+                rdServicePackageUrl = morphoL1Package;
+              }
+              else if (selectRdService == "MANTRA"){
+                rdServicePackageUrl = mantraPackage;
+              }
+              else if (selectRdService == "MANTRA L1"){
+                rdServicePackageUrl = mantraL1Package;
+              }
+              else if (selectRdService == "SecuGen"){
+                rdServicePackageUrl = secuGenPackage;
+              }
+              else {
+                rdServicePackageUrl = startekPackage;
+              }
 
-             Get.back();
-             onClick(rdServicePackageUrl);
+              Get.back();
+              onClick(rdServicePackageUrl);
             })
           ],
         ));
@@ -87,7 +96,7 @@ class AepsRdServiceDialog extends StatelessWidget with DialogHelperMixin {
   _getRdService() {
     var rdService = appPreference.rdService;
     if (rdService.isEmpty) {
-      return "MORPHO";
+      return "MANTRA";
     } else {
       return rdService;
     }

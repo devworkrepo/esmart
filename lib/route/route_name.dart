@@ -92,6 +92,7 @@ class AppRoute {
   static const importSettlementBank = "/import-settlement-bank-page";
 
   static const aepsOnboardingPage = "/aeps-onboarding-page";
+  static const aepsOnboardingFingPage = "/aeps-onboarding-fing-page";
 
   //wallet to wallet
   static const walletSearchPage = "/wallet-search-page";

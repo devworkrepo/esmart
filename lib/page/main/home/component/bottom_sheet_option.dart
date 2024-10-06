@@ -7,10 +7,10 @@ import 'package:esmartbazaar/widget/button.dart';
 
 class AepsDialogWidget extends StatelessWidget {
   final VoidCallback onTramo;
-  final VoidCallback onAirtel;
+  final VoidCallback onFingPay;
 
   const AepsDialogWidget(
-      {Key? key, required this.onTramo, required this.onAirtel})
+      {Key? key, required this.onTramo, required this.onFingPay})
       : super(key: key);
 
   @override
@@ -54,28 +54,25 @@ class AepsDialogWidget extends StatelessWidget {
                         Get.back();
                         onTramo();
                       },
-                      child: Text(
-                        "AEPS",
+                      child: const Text(
+                        "AEPS - 1",
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w500),
                       )),
                 ),
-              if (user.is_aeps_air ?? false)
+              if (user.isAEPS_F == true || true)
                 const SizedBox(
                   width: 16,
                 ),
-              if (user.is_aeps_air ?? false)
+              if (user.isAEPS_F == true || true)
                 Expanded(
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.green
-                    ),
                       onPressed: () {
                         Get.back();
-                        onAirtel();
+                        onFingPay();
                       },
-                      child: Text(
-                        "AEPS - QUEEN",
+                      child: const Text(
+                        "AEPS - 2",
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w500),
                       )),

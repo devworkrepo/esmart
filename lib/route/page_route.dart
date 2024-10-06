@@ -72,7 +72,8 @@ import '../page/dmt_upi/search_sender/search_sender_page.dart';
 import '../page/dmt_upi/sender_add/sender_add_page.dart';
 import '../page/dmt_upi/transaction/upi_transaction_page.dart';
 import '../page/investment/review/review_investment_page.dart';
-import '../page/main/aeps_onboarding/aeps_onboarding_page.dart';
+import '../page/main/aeps_onboarding_fing/aeps_onboarding_page.dart';
+import '../page/main/aeps_onboarding_tramo/aeps_onboarding_page.dart';
 import '../page/matm_tramo/matm_page.dart';
 import '../page/notification/notification_page.dart';
 import '../page/ott/ott_plan/ott_plan_page.dart';
@@ -201,6 +202,10 @@ final getAllPages = [
   GetPage(
     name: AppRoute.aepsOnboardingPage,
     page: () => const AepsOnboardingPage(),
+  ),
+  GetPage(
+    name: AppRoute.aepsOnboardingFingPage,
+    page: () => const AepsOnboadingFingPage(),
   ),
   GetPage(
     name: AppRoute.matmTramopage,

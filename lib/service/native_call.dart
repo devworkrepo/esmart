@@ -33,6 +33,13 @@ class NativeCall {
     return result;
   }
 
+  static Future<String> launchResultForAEPSData(
+      Map<String, dynamic> data) async {
+    data.addAll({"provider" : "common"});
+    String result = await _methodChannel.invokeMethod(_aepsServiceMethodName, data);
+    return result;
+  }
+
   static Future<Map<dynamic, dynamic>> launchMatmService(
       Map<String, dynamic> data) async {
     return await _methodChannel.invokeMethod(_matmServiceMethodName, data);

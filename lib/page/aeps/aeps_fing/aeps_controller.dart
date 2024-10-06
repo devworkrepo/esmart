@@ -21,6 +21,7 @@ import 'package:esmartbazaar/widget/list_component.dart';
 
 import '../../../route/route_name.dart';
 import '../../../util/mixin/location_helper_mixin.dart';
+import '../../../util/xml_pid_parser.dart';
 import '../transaction_type.dart';
 
 class AepsFingController extends GetxController
@@ -43,7 +44,7 @@ class AepsFingController extends GetxController
 
   late AepsBankResponse bankListResponse;
 
-  getTitle() => "AEPS";
+  getTitle() => "AEPS - 2";
 
   var requireAuth = true.obs;
 
@@ -85,7 +86,7 @@ class AepsFingController extends GetxController
           response.message ??
               "To do aeps, aadhaar pay and matm transaction"
                   " OnBoarding is required!",
-          AppRoute.aepsOnboardingPage,
+          AppRoute.aepsOnboardingFingPage,
         );
       } else if (response.code == 3) {
         StatusDialog.pending(
@@ -136,12 +137,13 @@ class AepsFingController extends GetxController
       onClick: (rdServicePackageUrl) async {
         try {
 
-          var result = await NativeCall.launchAirtelAepsService({
+          var result = await NativeCall.launchResultForAEPSData({
             "packageUrl": rdServicePackageUrl,
             "isTransaction": true
           });
 
-          _onRdServiceResult(result);
+          var xmlResult = XmlPidParser.parse(result);
+          _onRdServiceResult(xmlResult);
         } on PlatformException catch (e) {
           StatusDialog.failure(
               title: "Fingerprint capture failed, please try again");
@@ -152,24 +154,7 @@ class AepsFingController extends GetxController
     ));
   }
 
-  void _proceedF2FAuth(Map<dynamic,dynamic> biometricData) async {
-
-
-
-    final String hMac = biometricData["hMac"];
-    final String pidData = biometricData["pidData"];
-    final String deviceCode = biometricData["deviceCode"];
-    final String modelId = biometricData["modelId"];
-    final String providerCode = biometricData["providerCode"];
-    final String certificateCode = biometricData["certificateCode"];
-    final String serviceId = biometricData["serviceId"];
-    final String deviceVersion = biometricData["deviceVersion"];
-    final String sKey = biometricData["sKey"];
-    final String sKeyCI = biometricData["sKeyCI"];
-    final String deviceSerialNumber = biometricData["deviceSerialNumber"];
-    final String nmPoints = biometricData["sKeyNMPoints"];
-    final String qScore = biometricData["sKeyQScore"];
-
+  void _proceedF2FAuth(Map<dynamic,dynamic> data) async {
 
     var _param = <String, String>{
       "IIN": selectedAepsBank?.id ?? "",
@@ -178,22 +163,24 @@ class AepsFingController extends GetxController
       "longitude": position!.longitude.toString(),
       "transactionno":"",
       "devicename":"",
-      "devicesrno":deviceSerialNumber,
-      "nmPoints":nmPoints,
-      "qScore":qScore,
-      "dpID" : providerCode,
-      "rdsID":serviceId,
-      "rdsVer":deviceVersion,
-      "dc":deviceCode,
-      "mi":modelId,
-      "mc":certificateCode,
-      "ci":sKeyCI,
-      "capturesessionKey":sKey,
-      "hmac":hMac,
-      "PidDatatype":"",
-      "Piddata":pidData,
-     // "biometricData": data,
-     // "deviceSerialNumber": await NativeCall.getRdSerialNumber(data),
+      "Piddata": data["Data"].toString(),
+      "dc": data["DeviceInfoDC"],
+      "ci": data["SkeyCI"],
+      "hmac": data["Hmac"],
+      "dpId": data["DeviceInfoDpId"],
+      "mc": data["DeviceInfoMC"],
+      "skey": data["Skey"],
+      "mi": data["DeviceInfoMI"],
+      "rdsId": data["DeviceInfoRdsId"],
+      "devicesrno": data["srno"],
+      "sysid": data["sysid"],
+      "ts": data["ts"],
+      "pidData": data["Data"],
+      "qScore": data["qScore"],
+      "nmPoints": data["nmPoints"],
+      "PidDatatype": data["DataType"],
+      "capturesessionKey": data["Skey"],
+      "rdsVer": data["DeviceInfoRdsVer"]
     };
     try {
       StatusDialog.progress();
@@ -214,7 +201,7 @@ class AepsFingController extends GetxController
     }
   }
 
-  _onRdServiceResult(Map<dynamic,dynamic> data) async {
+  _onRdServiceResult(Map<String,String> data) async {
     if (requireAuth.value) {
       _proceedF2FAuth(data);
       return;
@@ -244,14 +231,15 @@ class AepsFingController extends GetxController
               title: "Bank Name", value: selectedAepsBank?.name ?? ""),
         ],
         onConfirm: () {
-
-          //todo  _aepsTransaction(data);
-
+           _aepsTransaction(data);
         }));
   }
 
-  _aepsTransaction(String data) async {
-    var _param = <String, String>{
+  _aepsTransaction(Map<String,String> data) async {
+
+
+    final _param = {
+
       "bankiin": selectedAepsBank?.id ?? "",
       "bankName": selectedAepsBank?.name ?? "",
       "txntype": _transactionTypeInCode(),
@@ -263,11 +251,28 @@ class AepsFingController extends GetxController
       "mobileno": mobileController.text.toString(),
       "latitude": position!.latitude.toString(),
       "longitude": position!.longitude.toString(),
-      "biometricData": data,
       "bcid": bankListResponse.bcid ?? "",
       "transaction_no": bankListResponse.transactionNumber ?? "",
-      "deviceSerialNumber": await NativeCall.getRdSerialNumber(data),
+      "Piddata": data["Data"].toString(),
+      "dc": data["DeviceInfoDC"],
+      "ci": data["SkeyCI"],
+      "hmac": data["Hmac"],
+      "dpId": data["DeviceInfoDpId"],
+      "mc": data["DeviceInfoMC"],
+      "skey": data["Skey"],
+      "capturesessionKey": data["Skey"],
+      "mi": data["DeviceInfoMI"],
+      "rdsId": data["DeviceInfoRdsId"],
+      "deviceSerialNumber": data["srno"],
+      "sysid": data["sysid"],
+      "ts": data["ts"],
+      "pidData": data["Data"],
+      "qScore": data["qScore"],
+      "nmPoints": data["nmPoints"],
+      "PidDatatype": data["DataType"],
+      "rdsVer": data["DeviceInfoRdsVer"]
     };
+
 
     try {
       StatusDialog.transaction();

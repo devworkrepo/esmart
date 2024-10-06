@@ -222,6 +222,7 @@ class MainActivity : FlutterFragmentActivity() {
             )
             var resultCode = AppConstant.AEPS_TRAMO_RESULT_CODE
             if (provider == "airtel") resultCode = AppConstant.AEPS_AIRTEL_RESULT_CODE
+            else if(provider == "common") resultCode = AppConstant.AEPS_COMMON_RESULT_CODE
 
             startActivityForResult(intent, resultCode)
         } catch (e: Exception) {
@@ -242,6 +243,11 @@ class MainActivity : FlutterFragmentActivity() {
         if (resultCode != RESULT_CANCELED && data != null && resultCode == RESULT_OK) {
             when (requestCode) {
                 AppConstant.AEPS_TRAMO_RESULT_CODE -> handleTramoRDResult(
+                    requestCode,
+                    resultCode,
+                    data
+                )
+                AppConstant.AEPS_COMMON_RESULT_CODE -> handleCommonAEPSResult(
                     requestCode,
                     resultCode,
                     data
@@ -405,6 +411,21 @@ class MainActivity : FlutterFragmentActivity() {
         } else {
             result!!.error("99", exceptionMessage, "result is null")
         }
+    }
+
+    private fun handleCommonAEPSResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        val exceptionMessage = "Captured failed, please check biometric device is connected!";
+        val mData = data!!.getStringExtra("PID_DATA")
+        if (mData != null) {
+            try {
+                result!!.success(mData)
+            } catch (e: java.lang.Exception) {
+                result!!.error("99", exceptionMessage, "parsing failed")
+            }
+        } else
+            result!!.error("99", exceptionMessage, "result is null")
+
     }
 
     private fun handleAirtelRDResult(requestCode: Int, resultCode: Int, data: Intent?) {

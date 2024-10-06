@@ -35,6 +35,7 @@ class UserDetail {
   bool? is_mpos_credo;
   bool? is_matm_credo;
   bool? is_aeps_air;
+  bool? isAEPS_F;
   bool? allow_local_apk;
   bool? is_pg;
   bool? is_cms;
@@ -87,6 +88,7 @@ class UserDetail {
     allow_local_apk = json['allow_local_apk'];
     isQR = json['isQR'];
     isUpi = json['isUPI'];
+    isAEPS_F = json['isAEPS_F'];
   }
 
   Map<String, dynamic> toJson() {
@@ -130,6 +132,7 @@ class UserDetail {
     data ['allow_local_apk']=allow_local_apk;
     data ['isQR']=isQR;
     data ['isUpi']=isUpi;
+    data ['isAEPS_F']=isAEPS_F;
     return data;
   }
 

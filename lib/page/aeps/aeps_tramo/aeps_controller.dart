@@ -43,7 +43,7 @@ class AepsController extends GetxController
 
   late AepsBankResponse bankListResponse;
 
-  getTitle() => isAadhaarPay ? "Aadhaar Pay" : "AEPS";
+  getTitle() => isAadhaarPay ? "Aadhaar Pay" : "AEPS - 1";
 
   var requireAuth = true.obs;
 
@@ -140,6 +140,8 @@ class AepsController extends GetxController
           var result = await NativeCall.launchTramoAepsService(
               {"packageUrl": rdServicePackageUrl, "isTransaction": true});
           _onRdServiceResult(result);
+
+          print("rd service result");
         } on PlatformException catch (e) {
           StatusDialog.failure(
               title: "Fingerprint capture failed, please try again");

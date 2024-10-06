@@ -2,7 +2,7 @@ class AppConstant{
 
 
  static const liveBaseUrl = "https://uatapi.esmartbazaar.in/EsmartAppService.svc/";
- static const uatBaseUrl = "https://uatapi.esmartbazaar.in/EsmartAppService.svc/";
+ static const uatBaseUrl = "https://uattest.esmartbazaar.in/EsmartAppService.svc/";
  static const uatSignUpBaseUrl = "https://api.esmartbazaar.in/AppSignUp.svc/";
  static const liveSignUpBaseUrl = "https://apiv2app.esmartbazaar.in/AppSignUp.svc/";
 

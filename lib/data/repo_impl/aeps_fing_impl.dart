@@ -1,22 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:esmartbazaar/data/repo/aeps_fing_repo.dart';
-import 'package:esmartbazaar/page/aeps/aeps_fing/aeps_page.dart';
 import 'package:get/get.dart';
-import 'package:esmartbazaar/data/repo/aeps_repo.dart';
 import 'package:esmartbazaar/model/aeps/aeps_bank.dart';
 import 'package:esmartbazaar/model/aeps/aeps_transaction.dart';
 import 'package:esmartbazaar/model/aeps/kyc/e_kyc.dart';
-import 'package:esmartbazaar/model/aeps/settlement/aeps_calc.dart';
-import 'package:esmartbazaar/model/aeps/settlement/balance.dart';
-import 'package:esmartbazaar/model/aeps/settlement/bank.dart';
-import 'package:esmartbazaar/model/bank.dart';
 import 'package:esmartbazaar/model/common.dart';
-import 'package:esmartbazaar/model/report/requery.dart';
 import 'package:esmartbazaar/service/network_client.dart';
-import 'package:esmartbazaar/util/app_util.dart';
-
+import 'package:dio/dio.dart' as dio;
 import '../../model/aeps/aeps_state.dart';
-import '../../model/matm/matm_request_response.dart';
 
 class AepsFingRepoImpl extends AepsFingRepo {
   NetworkClient client = Get.find();
@@ -29,11 +20,9 @@ class AepsFingRepoImpl extends AepsFingRepo {
 
   @override
   Future<AepsTransactionResponse> aepsTransaction(data) async {
-    var response = await client.post("/AEPSTransaction", data: data);
+    var response = await client.post("/AEPSTransactionFing", data: data);
     return AepsTransactionResponse.fromJson(response.data);
   }
-
-
 
   @override
   Future<AepsStateListResponse> getAepsState() async {
@@ -45,7 +34,17 @@ class AepsFingRepoImpl extends AepsFingRepo {
 
   @override
   Future<CommonResponse> onBoardAeps(data) async {
-    var response = await client.post("/OnBoardAEPS", data: data);
+    var response = await client.post("/OnBoardAEPSFing", data: data);
+    return CommonResponse.fromJson(response.data);
+  }
+
+  @override
+  Future<CommonResponse> aepsImageOnBoarding(dio.FormData data) async {
+    var response = await client.post("/UpdateOnBoardPicsFing",
+        data: data,
+        options: Options(
+            contentType: "application/json",
+            headers: {"Accept": "application/json"}));
     return CommonResponse.fromJson(response.data);
   }
 
@@ -73,21 +72,15 @@ class AepsFingRepoImpl extends AepsFingRepo {
     return EKycResponse.fromJson(response.data);
   }
 
-
-
   @override
   Future<CommonResponse> proceedDaily2FAuth(data) async {
-    var response = await client.post("/DailyAuthFing",data: data);
+    var response = await client.post("/DailyAuthFing", data: data);
     return CommonResponse.fromJson(response.data);
   }
 
-
-
-
   @override
-  Future<CommonResponse> checkDaily2FAuth() async{
+  Future<CommonResponse> checkDaily2FAuth() async {
     var response = await client.post("/CheckDailyAuthFing");
     return CommonResponse.fromJson(response.data);
   }
-
 }

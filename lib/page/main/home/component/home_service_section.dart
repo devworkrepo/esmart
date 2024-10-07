@@ -201,7 +201,7 @@ List<HomeServiceItem> _homeServiceList(UserDetail user) {
     itemList.add(
         HomeServiceItem("Aadhaar Pay", "fingerprint-scan", HomeServiceType.aadhaarPay));
   }
-  if (user.isAeps.orFalse() || user.is_aeps_air.orFalse()) {
+  if (user.isAeps.orFalse() || user.isAEPS_F.orFalse()) {
     itemList.add(HomeServiceItem("Aeps", "fingerprint-scan", HomeServiceType.aeps));
   }
   if (user.isRecharge.orFalse()) {

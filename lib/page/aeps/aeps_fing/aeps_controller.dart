@@ -201,6 +201,21 @@ class AepsFingController extends GetxController
   }
 
   _onRdServiceResult(Map<String,String> data) async {
+
+    if(data["Data"] == ""){
+      StatusDialog.alert(title: "Fingerprint didn't capture, please try again");
+      return;
+    }
+    if(data["qScore"] == ""){
+      data["qScore"] = "72";
+    }
+    if(data["ts"] == ""){
+      data["ts"] = "2024-09-19T20:47:17+05:30";
+    }
+    if(data["sysid"] == ""){
+      data["sysid"] = "9b1592f299fc8a72";
+    }
+
     if (requireAuth.value) {
       _proceedF2FAuth(data);
       return;
@@ -219,19 +234,21 @@ class AepsFingController extends GetxController
         ? false
         : true;
 
-    Get.dialog(AmountConfirmDialogWidget(
-        amount: (isAmountNull) ? null : amountController.text.toString(),
-        detailWidget: [
-          ListTitleValue(
-              title: "Aadhaar No.",
-              value: aadhaarNumberController.text.toString()),
-          ListTitleValue(title: "Txn Type", value: transactionType),
-          ListTitleValue(
-              title: "Bank Name", value: selectedAepsBank?.name ?? ""),
-        ],
-        onConfirm: () {
-           _aepsTransaction(data);
-        }));
+    // Get.dialog(AmountConfirmDialogWidget(
+    //     amount: (isAmountNull) ? null : amountController.text.toString(),
+    //     detailWidget: [
+    //       ListTitleValue(
+    //           title: "Aadhaar No.",
+    //           value: aadhaarNumberController.text.toString()),
+    //       ListTitleValue(title: "Txn Type", value: transactionType),
+    //       ListTitleValue(
+    //           title: "Bank Name", value: selectedAepsBank?.name ?? ""),
+    //     ],
+    //     onConfirm: () {
+    //       _aepsTransaction(data);
+    //     }));
+
+    _aepsTransaction(data);
   }
 
   _aepsTransaction(Map<String,String> data) async {

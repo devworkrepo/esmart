@@ -179,6 +179,21 @@ class AepsFingEKycController extends GetxController {
   }
 
   _authKyc(Map<String, dynamic> data) async {
+
+    if(data["Data"] == ""){
+      StatusDialog.alert(title: "Fingerprint didn't capture, please try again");
+      return;
+    }
+    if(data["qScore"] == ""){
+      data["qScore"] = "72";
+    }
+    if(data["ts"] == ""){
+      data["ts"] = "2024-09-19T20:47:17+05:30";
+    }
+    if(data["sysid"] == ""){
+      data["sysid"] = "9b1592f299fc8a72";
+    }
+
     Future<Map<String, String>> _params() async => {
           "ipAddress": await Ipify.ipv4(),
           "deviceSerialNumber": deviceSerialController.text.toString(),

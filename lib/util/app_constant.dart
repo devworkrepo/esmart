@@ -18,7 +18,7 @@ class AppConstant{
  static const rupeeSymbol = "₹ ";
 
  static String baseCaptchaUrl = liveCaptchaUrl;
- static String baseUrl = uatBaseUrl;
+ static String baseUrl = liveBaseUrl;
  static String signUpBaseUrl = liveSignUpBaseUrl;
 
 }

@@ -60,11 +60,11 @@ class AepsDialogWidget extends StatelessWidget {
                             fontSize: 14, fontWeight: FontWeight.w500),
                       )),
                 ),
-              if (user.isAEPS_F == true || true)
+              if (user.isAEPS_F ?? false)
                 const SizedBox(
                   width: 16,
                 ),
-              if (user.isAEPS_F == true || true)
+              if (user.isAEPS_F ?? false)
                 Expanded(
                   child: ElevatedButton(
                       onPressed: () {

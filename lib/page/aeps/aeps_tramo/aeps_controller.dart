@@ -201,23 +201,29 @@ class AepsController extends GetxController
         ? false
         : true;
 
-    Get.dialog(AmountConfirmDialogWidget(
-        amount: (isAmountNull) ? null : amountController.text.toString(),
-        detailWidget: [
-          ListTitleValue(
-              title: "Aadhaar No.",
-              value: aadhaarNumberController.text.toString()),
-          ListTitleValue(title: "Txn Type", value: transactionType),
-          ListTitleValue(
-              title: "Bank Name", value: selectedAepsBank?.name ?? ""),
-        ],
-        onConfirm: () {
-          if (isAadhaarPay) {
-            _aadhaarPayTransaction(data);
-          } else {
-            _aepsTransaction(data);
-          }
-        }));
+    // Get.dialog(AmountConfirmDialogWidget(
+    //     amount: (isAmountNull) ? null : amountController.text.toString(),
+    //     detailWidget: [
+    //       ListTitleValue(
+    //           title: "Aadhaar No.",
+    //           value: aadhaarNumberController.text.toString()),
+    //       ListTitleValue(title: "Txn Type", value: transactionType),
+    //       ListTitleValue(
+    //           title: "Bank Name", value: selectedAepsBank?.name ?? ""),
+    //     ],
+    //     onConfirm: () {
+    //       if (isAadhaarPay) {
+    //         _aadhaarPayTransaction(data);
+    //       } else {
+    //         _aepsTransaction(data);
+    //       }
+    //     }));
+
+    if (isAadhaarPay) {
+      _aadhaarPayTransaction(data);
+    } else {
+      _aepsTransaction(data);
+    }
   }
 
   _aepsTransaction(String data) async {

@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "914539931751",
-    "project_id": "spay-india",
-    "storage_bucket": "spay-india.appspot.com"
+    "project_number": "472291661101",
+    "project_id": "esmart-devjd",
+    "storage_bucket": "esmart-devjd.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:914539931751:android:7a6a635dc7bc0dea1c0cc2",
+        "mobilesdk_app_id": "1:472291661101:android:e781a62005496930582fa4",
         "android_client_info": {
           "package_name": "app.esmartbazaar.com"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDhiC2pDqZTsOAN6CH5KIq8a8DZvWFwwOY"
+          "current_key": "AIzaSyAZ3y-5kM_WZN47yQY0rLPG-qfraaxlcdM"
         }
       ],
       "services": {

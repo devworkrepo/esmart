@@ -62,7 +62,9 @@ class DmtSearchSenderController extends GetxController {
       final accountNumber = numberController.text.toString();
       final data = {"accountno": accountNumber};
 
-      AccountSearchResponse response = await repo.searchAccount(data);
+      AccountSearchResponse response = (dmtType == DmtType.dmt2)
+          ? await repo.searchAccountDmt2(data)
+          : await repo.searchAccount(data);
       Get.back();
       if (response.code == 1) {
         Get.dialog(AccountListDialogWidget(
@@ -98,9 +100,7 @@ class DmtSearchSenderController extends GetxController {
     }
   }
 
-  _searchSender({AccountSearch? accountSearch,int delay = 0}) async {
-
-
+  _searchSender({AccountSearch? accountSearch, int delay = 0}) async {
     StatusDialog.progress(title: "Searching");
     await Future.delayed(Duration(seconds: delay));
     try {
@@ -109,7 +109,9 @@ class DmtSearchSenderController extends GetxController {
           : numberController.text.toString();
       final data = {"mobileno": mobile};
 
-      SenderInfo sender = await repo.searchSender(data);
+      SenderInfo sender = (dmtType == DmtType.instantPay)
+          ? await repo.searchSender(data)
+          : await repo.searchSenderDmt2(data);
 
       sender.showNonKycDetail = sender.isKycVerified == false;
 
@@ -124,26 +126,59 @@ class DmtSearchSenderController extends GetxController {
       Get.back();
 
       if (sender.code == 1) {
-        final args = {"sender": sender, "dmtType": dmtType, "account" : accountSearch};
-        Get.toNamed(AppRoute.dmtBeneficiaryListPage, arguments: args)?.then((value){
-          if(value!=null){
-            if(value is Map){
-
+        final args = {
+          "sender": sender,
+          "dmtType": dmtType,
+          "account": accountSearch
+        };
+        Get.toNamed(AppRoute.dmtBeneficiaryListPage, arguments: args)
+            ?.then((value) {
+          if (value != null) {
+            if (value is Map) {
               numberController.text = value["mobile_number"];
               _searchSender(delay: 3);
             }
           }
         });
       } else if (sender.code == 2) {
-        final args = {
-          "mobile": mobile,
-          "dmtType": dmtType,
-        };
-        Get.toNamed(AppRoute.dmtSenderAddPage, arguments: args)?.then((value){
-          if(value != null){
-            _searchSender();
+        if (dmtType == DmtType.instantPay) {
+          final args = {
+            "mobile": mobile,
+            "dmtType": dmtType,
+          };
+          Get.toNamed(AppRoute.dmtSenderAddPage, arguments: args)
+              ?.then((value) {
+            if (value != null) {
+              _searchSender();
+            }
+          });
+        } else {
+          if (sender.isekyc ?? false) {
+            final args = {
+              "mobile": mobile,
+              "dmtType": dmtType,
+              "sender": sender
+            };
+            Get.toNamed(AppRoute.dmtSenderAddPageKyc, arguments: args)
+                ?.then((value) {
+              if (value != null) {
+                _searchSender();
+              }
+            });
+          } else {
+            final args = {
+              "mobile": mobile,
+              "dmtType": dmtType,
+              "sender": sender
+            };
+            Get.toNamed(AppRoute.dmtSenderAddPage2, arguments: args)
+                ?.then((value) {
+              if (value != null) {
+                _searchSender();
+              }
+            });
           }
-        });
+        }
       } else {
         StatusDialog.failure(title: sender.message);
       }
@@ -162,7 +197,4 @@ class DmtSearchSenderController extends GetxController {
       (searchTypeObs.value == DmtRemitterSearchType.mobile) ? 10 : 20;
 }
 
-
-enum DmtRemitterSearchType{
-  mobile,account
-}
+enum DmtRemitterSearchType { mobile, account }

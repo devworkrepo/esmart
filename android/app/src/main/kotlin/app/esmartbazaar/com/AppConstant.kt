@@ -19,6 +19,8 @@ object AppConstant {
     const val BLUETOOTH_CHECK_ENABLE = "bluetooth_check_enable"
     const val BLUETOOTH_CHECK_PAIRED = "bluetooth_check_paired"
     const val UPI_PAYMENT = "upi_payment"
+    const val DMT_TWO_AUTH_PID_DATA = "dmt_two_auth_pid_data"
+    const val DMT_TWO_AUTH_PID_DATA_REQUEST_CODE = 2000
 
 
 
@@ -32,6 +34,12 @@ object AppConstant {
         const val PID_OPTION_KYC = """
         <PidOptions ver="1.0"><Opts env="P" fCount="1" fType="2" iCount="0" format="0" pidVer="2.0" timeout="15000" wadh="E0jzJ/P8UopUHAieZn8CKqS4WPMi5ZSYXgfnlfkWjrc=" posh="UNKNOWN" /></PidOptions>
     """
+
+        const val PID_OPTION_DMT_AUTH = """
+        <PidOptions ver="1.0"><Opts env="P" fCount="1" fType="2" iCount="0" format="0" pidVer="2.0" timeout="15000" wadh="18f4CEiXeXcfGXvgWA/blxD+w2pw7hfQPY45JMytkPw=" posh="UNKNOWN" /></PidOptions>
+    """
+
+
     }
 
 

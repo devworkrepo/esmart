@@ -137,6 +137,34 @@ class RechargeOptionDialog extends StatelessWidget {
   }
 }
 
+
+class DmtOptionDialog extends StatelessWidget {
+  final VoidCallback onDmtOne;
+  final VoidCallback onDmtTwo;
+
+  const DmtOptionDialog(
+      {Key? key, required this.onDmtTwo, required this.onDmtOne})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return _BaseOptionDialogWidget(
+      title: "Money Transfer Type",
+      option: [
+        _BaseOption(
+            title: "Money Transfer - 1",
+            onClick: onDmtOne,
+            svgName: "money"),
+        _BaseOption(
+            title: "Money Transfer - 2",
+            onClick: onDmtTwo,
+            svgName: "money"),
+      ],
+      isSvg: false,
+    );
+  }
+}
+
 class MatmOptionDialog extends StatelessWidget {
   final VoidCallback matmClick;
   final VoidCallback mposClick;

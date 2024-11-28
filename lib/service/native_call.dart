@@ -7,6 +7,7 @@ class NativeCall {
   static const _methodChannelName = "app.esmartbazaar.com";
   static const _methodChannel = MethodChannel(_methodChannelName);
   static const _aepsServiceMethodName = "launch_aeps_service";
+  static const _dmtTwoAuthPidData = "dmt_two_auth_pid_data";
   static const _matmServiceMethodName = "launch_matm_service";
   static const _rdServiceSerialNumber = "rd_service_serial_number";
   static const _rootCheckerService = "root_checker_service";
@@ -20,6 +21,12 @@ class NativeCall {
     data.addAll({"provider": "tramo"});
     final String result =
         await _methodChannel.invokeMethod(_aepsServiceMethodName, data);
+    return result;
+  }
+
+  static Future<String> launchForDmtTwoAuthPidXmlData(Map<String, dynamic> data) async {
+    final String result =
+    await _methodChannel.invokeMethod(_dmtTwoAuthPidData, data);
     return result;
   }
 

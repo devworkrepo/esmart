@@ -1,5 +1,6 @@
 import 'package:esmartbazaar/page/aeps/aeps_fing/aeps_page.dart';
 import 'package:esmartbazaar/page/aeps/aeps_fing/kyc/aeps_e_kyc_page.dart';
+import 'package:esmartbazaar/page/dmt/sender_add_kyc/sender_add_kyc_page.dart';
 import 'package:esmartbazaar/page/my_qr/my_qr_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -66,6 +67,7 @@ import '../page/aeps_settlement/import_account/import_account_page.dart';
 import '../page/aeps_settlement/settlement/settlement_page.dart';
 import '../page/complaint/complain_post/complain_post_page.dart';
 import '../page/complaint/complaint_list/complaint_list_page.dart';
+import '../page/dmt/sender_add_2/sender_add_page.dart';
 import '../page/dmt/sender_kcy/sender_kyc_page.dart';
 import '../page/dmt_upi/beneficiary/add/beneficiary_add_page.dart';
 import '../page/dmt_upi/beneficiary/list/beneficiary_page.dart';
@@ -243,6 +245,14 @@ final getAllPages = [
   GetPage(
     name: AppRoute.dmtSenderAddPage,
     page: () => const SenderAddPage(),
+  ),
+  GetPage(
+    name: AppRoute.dmtSenderAddPage2,
+    page: () => const SenderAddPage2(),
+  ),
+  GetPage(
+    name: AppRoute.dmtSenderAddPageKyc,
+    page: () => const SenderAddKycPage(),
   ),
 
   GetPage(

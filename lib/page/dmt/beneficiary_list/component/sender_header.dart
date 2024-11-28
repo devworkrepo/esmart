@@ -98,7 +98,7 @@ class BeneficiarySenderHeader extends GetView<BeneficiaryListController> {
     }
 
     return Text(
-      "₹ ${(controller.sender!.isKycVerified!) ? controller.sender?.impsKycLimitView : controller.sender?.impsNKycLimitView}",
+      "₹ ${(controller.sender!.isKycVerified ?? false) ? controller.sender?.impsKycLimitView : controller.sender?.impsNKycLimitView}",
       style: Get.textTheme.headline3?.copyWith(color: Colors.green),
     );
   }

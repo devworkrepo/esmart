@@ -31,6 +31,13 @@ class SenderInfo{
         String? upi_limit;
         String? perentry_limit;
 
+
+        bool? isname;
+        bool? isotp;
+        bool? isekyc;
+        String? first_name;
+        String? last_name;
+
         SenderInfo.fromJson(Map<String,dynamic> json){
                 code = json["code"];
                 message = json["message"].toString();
@@ -59,6 +66,12 @@ class SenderInfo{
                 senderId = json["remitterid"];
                 upi_limit = json["upi_limit"].toString();
                 perentry_limit = json["perentry_limit"].toString();
+                isname = json["isname"] ?? false;
+                isotp = json["isotp"] ?? false;
+                isekyc = json["isekyc"] ?? false;
+                first_name = json["first_name"] ?? "";
+                last_name = json["last_name"] ?? "";
+
 
         }
 

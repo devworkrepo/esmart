@@ -113,8 +113,7 @@ class _TransferModeDialogState extends State<TransferModeDialog> with Transactio
                     _buildButton(
                         onClick: () {
                           if (_validateAmount()) {
-                            var amount =
-                                amountWithoutRupeeSymbol(_amountController);
+                            var amount = amountWithoutRupeeSymbol(_amountController);
 
                             if (widget.dmtType == DmtType.payout) {
                               if (_validatePayout(amount)) {
@@ -122,6 +121,13 @@ class _TransferModeDialogState extends State<TransferModeDialog> with Transactio
                                 widget.onClick(amount, DmtTransferType.imps);
                               }
                             } else {
+
+                              if(widget.dmtType == DmtType.dmt2){
+                                Get.back();
+                                widget.onClick(amount, DmtTransferType.imps);
+                                return;
+                              }
+
                               if (_validateImps(amount)) {
                                 Get.back();
                                 widget.onClick(amount, DmtTransferType.imps);
@@ -146,6 +152,13 @@ class _TransferModeDialogState extends State<TransferModeDialog> with Transactio
                                 widget.onClick(amount, DmtTransferType.neft);
                               }
                             } else {
+
+                              if(widget.dmtType == DmtType.dmt2){
+                                Get.back();
+                                widget.onClick(amount, DmtTransferType.neft);
+                                return;
+                              }
+
                               if (_validateNeft(amount)) {
                                 Get.back();
                                 widget.onClick(amount, DmtTransferType.neft);
@@ -343,9 +356,9 @@ class _TransferModeDialogState extends State<TransferModeDialog> with Transactio
       return "Enter valid amount";
     }
     AppPreference appPreference = Get.find();
-    var minAmount = (widget.dmtType == DmtType.instantPay) ? 100 : 25001;
+    var minAmount = (widget.dmtType == DmtType.instantPay || widget.dmtType == DmtType.dmt2) ? 100 : 25001;
 
-    var maxAmount = (widget.dmtType == DmtType.instantPay)
+    var maxAmount = (widget.dmtType == DmtType.instantPay || widget.dmtType == DmtType.dmt2)
         ? (widget.senderInfo.isKycVerified ?? false)
             ? 49750
             : 25000

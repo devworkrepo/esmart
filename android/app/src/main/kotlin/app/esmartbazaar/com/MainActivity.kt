@@ -19,6 +19,7 @@ import app.esmartbazaar.com.AppConstant.RD_SERVICE_SERIAL_NUMBER
 import app.esmartbazaar.com.AppConstant.ROOT_CHECKER_METHOD_NAME
 import app.esmartbazaar.com.AppConstant.UPI_PAYMENT
 import app.esmartbazaar.com.AppConstant.UPI_PAYMENT_RESULT_CODE
+import app.esmartbazaar.com.AppConstant.DMT_TWO_AUTH_PID_DATA
 import com.fingpay.microatmsdk.MicroAtmLoginScreen
 import com.fingpay.microatmsdk.utils.Constants
 import io.flutter.embedding.android.FlutterFragmentActivity
@@ -79,6 +80,9 @@ class MainActivity : FlutterFragmentActivity() {
 
                 call.method.equals(UPI_PAYMENT) -> {
                     upiPayment(call)
+                }
+                call.method.equals(DMT_TWO_AUTH_PID_DATA) -> {
+                    captureDmtTwoAuthPidData(call)
                 }
 
 
@@ -230,6 +234,22 @@ class MainActivity : FlutterFragmentActivity() {
         }
     }
 
+    private fun captureDmtTwoAuthPidData(call: MethodCall) {
+
+        val rdServicePackageUrl = call.argument<String>("packageUrl")
+
+        try {
+            val intent = Intent()
+            intent.setPackage(rdServicePackageUrl)
+            intent.action = AppConstant.Aeps.INTENT_ACTION
+            intent.putExtra("PID_OPTIONS", AppConstant.Aeps.PID_OPTION_DMT_AUTH)
+            val resultCode = AppConstant.DMT_TWO_AUTH_PID_DATA_REQUEST_CODE
+            startActivityForResult(intent, resultCode)
+        } catch (e: Exception) {
+
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -247,6 +267,13 @@ class MainActivity : FlutterFragmentActivity() {
                     resultCode,
                     data
                 )
+
+                AppConstant.DMT_TWO_AUTH_PID_DATA_REQUEST_CODE -> handleDmtTwoAuthPidDataResult(
+                    requestCode,
+                    resultCode,
+                    data
+                )
+
                 AppConstant.AEPS_COMMON_RESULT_CODE -> handleCommonAEPSResult(
                     requestCode,
                     resultCode,
@@ -394,6 +421,26 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun handleTramoRDResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        val exceptionMessage = "Captured failed, please check biometric device is connected!";
+        val mData = data!!.getStringExtra("PID_DATA")
+        if (mData != null) {
+            try {
+                val respString = XmPidParser.parse(mData)
+                if (respString[0].equals("0", ignoreCase = true)) {
+                    result!!.success(mData)
+                } else {
+                    result!!.error("99", exceptionMessage, respString[1])
+                }
+            } catch (e: java.lang.Exception) {
+                result!!.error("99", exceptionMessage, "parsing failed")
+            }
+        } else {
+            result!!.error("99", exceptionMessage, "result is null")
+        }
+    }
+
+    private fun handleDmtTwoAuthPidDataResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         val exceptionMessage = "Captured failed, please check biometric device is connected!";
         val mData = data!!.getStringExtra("PID_DATA")

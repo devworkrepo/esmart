@@ -8,6 +8,11 @@ class CommonResponse {
   bool? kyc_dmt;
   String? refid;
 
+  String? ekycid;
+  String? ekyccode;
+  String? remitterid;
+  String? otpcode;
+
 
   CommonResponse();
 
@@ -20,6 +25,11 @@ class CommonResponse {
     transResponse  = json["trans_response"];
     kyc_dmt  = json["kyc_dmt"];
     refid  = json["refid"];
+    ekycid  = json["ekycid"];
+    ekyccode  = json["ekyccode"];
+    remitterid  = json["remitterid"];
+    otpcode  = json["otpcode"];
+
 
   }
 

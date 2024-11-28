@@ -22,6 +22,11 @@ class DmtRepoImpl extends DmtRepo {
 
     var response = await client.post("SearchRemitter", data: data);
     return SenderInfo.fromJson(response.data);
+  }  @override
+  Future<SenderInfo> searchSenderDmt2(Map<String, String> data) async {
+
+    var response = await client.post("DMT2SearchRemitter", data: data);
+    return SenderInfo.fromJson(response.data);
   }
 
   @override
@@ -59,9 +64,30 @@ class DmtRepoImpl extends DmtRepo {
   }
 
   @override
+  Future<CommonResponse> senderRegistration2(Map<String, String> data) async {
+    var response = await client.post(
+        "DMT2RemitterOTP", data: data);
+    return CommonResponse.fromJson(response.data);
+  }
+
+  @override
+  Future<CommonResponse> senderRegistrationKyc(Map<String, String> data) async {
+    var response = await client.post(
+        "DMT2SendereKYC", data: data);
+    return CommonResponse.fromJson(response.data);
+  }
+
+  @override
   Future<CommonResponse> senderRegistrationOtp(Map<String, String> data) async {
     var response = await client.post(
         "AddRemitter", data: data);
+    return CommonResponse.fromJson(response.data);
+  }
+
+  @override
+  Future<CommonResponse> senderRegistrationOtp2(Map<String, String> data) async {
+    var response = await client.post(
+        "DMT2AddRemitter", data: data);
     return CommonResponse.fromJson(response.data);
   }
 
@@ -97,6 +123,12 @@ class DmtRepoImpl extends DmtRepo {
   }
 
   @override
+  Future<CalculateChargeResponse> calculateKycCharge2(Map<String, String> data) async {
+    var response = await client.post("CalcDMT2Charges",data: data);
+    return CalculateChargeResponse.fromJson(response.data);
+  }
+
+  @override
   Future<CalculateChargeResponse> calculateNonKycCharge(Map<String, String> data)async {
     var response = await client.post("CalcNonKycCharges",data: data);
     return CalculateChargeResponse.fromJson(response.data);
@@ -125,10 +157,21 @@ class DmtRepoImpl extends DmtRepo {
     var response = await client.post("/SearchBeneficiary", data: data);
     return AccountSearchResponse.fromJson(response.data);
   }
+@override
+  Future<AccountSearchResponse> searchAccountDmt2(Map<String, String> data) async {
+    var response = await client.post("/DMT2SearchBeneficiary", data: data);
+    return AccountSearchResponse.fromJson(response.data);
+  }
 
   @override
   Future<DmtTransactionResponse> kycTransaction(Map<String, String> data,CancelToken? cancelToken)  async{
     var response = await client.post("/KycTransaction", data: data,cancelToken: cancelToken);
+    return DmtTransactionResponse.fromJson(response.data);
+  }
+
+  @override
+  Future<DmtTransactionResponse> dmt2Transaction(Map<String, String> data,CancelToken? cancelToken)  async{
+    var response = await client.post("/DMT2Transaction", data: data,cancelToken: cancelToken);
     return DmtTransactionResponse.fromJson(response.data);
   }
 
@@ -196,6 +239,12 @@ class DmtRepoImpl extends DmtRepo {
   @override
   Future<CommonResponse> senderKycSendOtp(data) async {
     var response = await client.post("/SendEKycOTP",data: data);
+    return CommonResponse.fromJson(response.data);
+  }
+
+  @override
+  Future<CommonResponse> sendDmt2TransactionOtp(data) async {
+    var response = await client.post("/DMT2TransactionOTP",data: data);
     return CommonResponse.fromJson(response.data);
   }
 

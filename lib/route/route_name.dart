@@ -38,6 +38,8 @@ class AppRoute {
   static const dmtSearchSenderPage = "/dmt-search-sender-page";
   static const dmtBeneficiaryListPage = "/dmt-beneficiary_list-page";
   static const dmtSenderAddPage = "/dmt-sender-add-page";
+  static const dmtSenderAddPage2 = "/dmt-sender-add-page-2";
+  static const dmtSenderAddPageKyc = "/dmt-sender-add-page-kyc";
   static const dmtBeneficiaryAddPage = "/dmt-beneficiary-add-page";
   static const dmtTransactionPage = "/dmt-transaction-page";
   static const dmtTransactionResponsePage = "/dmt-transaction-response-page";

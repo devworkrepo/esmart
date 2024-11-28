@@ -1,3 +1,4 @@
+import 'package:esmartbazaar/page/dmt/dmt.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:esmartbazaar/page/dmt/beneficiary_list/beneficiary_controller.dart';
@@ -106,7 +107,7 @@ class BeneficiaryListPage extends GetView<BeneficiaryListController> {
   SliverAppBar _buildSilverAppbar() {
     return SliverAppBar(
       actions: [
-        PopupMenuButton<BeneficiaryListPopMenu>(
+     if(controller.dmtType != DmtType.dmt2)   PopupMenuButton<BeneficiaryListPopMenu>(
           onSelected: (i) => controller.onSelectPopupMenu(i),
           itemBuilder: (BuildContext context) {
             return controller

@@ -156,6 +156,27 @@ class _BuildMpinAndRemarkWidget extends GetView<DmtTransactionController> {
                     MPinTextField(
                       controller: controller.mpinController,
                     ),
+                    if (controller.dmtType == DmtType.dmt2)
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                              child: OtpTextField(
+                                maxLength: 4,
+                                controller: controller.otpController,
+                              )),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          SizedBox(
+                              width: 100,
+                              child: AppButton(
+                                  text: "Send Otp",
+                                  onClick: () =>
+                                      controller.requestOtp()))
+                        ],
+                      )
+
                   ],
                 ),
               )

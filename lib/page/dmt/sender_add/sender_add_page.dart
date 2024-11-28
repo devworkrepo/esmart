@@ -3,15 +3,16 @@ import 'package:get/get.dart';
 import 'package:esmartbazaar/widget/button.dart';
 import 'package:esmartbazaar/widget/common/counter_widget.dart';
 import 'package:esmartbazaar/widget/text_field.dart';
-import 'package:esmartbazaar/page/dmt/sender_add/sender_add_controller.dart';
 import 'package:esmartbazaar/util/validator.dart';
 
-class SenderAddPage extends GetView<SenderAddController> {
-  const SenderAddPage({Key? key}) : super(key: key);
+import '../sender_add_2/sender_add_controller.dart';
+
+class SenderAddPage2 extends GetView<SenderAddController2> {
+  const SenderAddPage2({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SenderAddController());
+    Get.put(SenderAddController2());
     return Scaffold(
       appBar: AppBar(
         title: const Text("Register Sender"),
@@ -29,65 +30,55 @@ class SenderAddPage extends GetView<SenderAddController> {
           child: Form(
             key: controller.senderAddFormKey,
             child: SingleChildScrollView(
-              child: Obx(() => Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      MobileTextField(
-                          enable: false,
-                          controller: controller.mobileNumberController),
-                      AppTextField(
-                          enable: controller.isTextFieldEnable(),
-                          hint: "Enter First Name",
-                          label: "First Name",
-                          validator: FormValidatorHelper.normalValidation,
-                          controller: controller.firstNameController),
-                      AppTextField(
-                          enable: controller.isTextFieldEnable(),
-                          hint: "Enter Last Name",
-                          label: "Last Name",
-                          validator: FormValidatorHelper.normalValidation,
-                          controller: controller.lastNameController),
-                      (controller.actionType.value ==
-                              SenderAddActionType.addSender)
-                          ? OtpTextField(
-                              maxLength: 6,
-                              controller: controller.otpController)
-                          : const SizedBox(),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      AppButton(
-                        text: controller.getButtonText(),
-                        onClick: controller.onButtonClick,
-                      ),
-                      (controller.actionType.value ==
-                              SenderAddActionType.addSender)
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: 24, bottom: 8),
-                              child: (controller
-                                      .resendButtonVisibilityObs.value)
-                                  ? SizedBox(
-                                      width: Get.width,
-                                      height: 48,
-                                      child: OutlinedButton(
-                                        onPressed: () {
-                                          controller.onResendOtp();
-                                        },
-                                        child: const Text("Resend Otp"),
-                                        style: OutlinedButton.styleFrom(
-                                            side: BorderSide(
-                                                color: Get.theme.primaryColor)),
-                                      ))
-                                  : CounterWidget(
-                                      onTimerComplete: () {
-                                        controller.resendButtonVisibilityObs
-                                            .value = true;
-                                      },
-                                    ),
-                            )
-                          : const SizedBox()
-                    ],
-                  )),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  MobileTextField(
+                      enable: false,
+                      controller: controller.mobileNumberController),
+                  if (controller.sender?.isname == true)
+                    AppTextField(
+                        enable: true,
+                        hint: "Enter First Name",
+                        label: "First Name",
+                        validator: FormValidatorHelper.normalValidation,
+                        controller: controller.firstNameController),
+                  if (controller.sender?.isname == true)
+                    AppTextField(
+                        enable: true,
+                        hint: "Enter Last Name",
+                        label: "Last Name",
+                        validator: FormValidatorHelper.normalValidation,
+                        controller: controller.lastNameController),
+                  if (controller.sender?.isotp == true)
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                            child: OtpTextField(
+                          maxLength: 4,
+                          controller: controller.otpController,
+                        )),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        SizedBox(
+                            width: 100,
+                            child: AppButton(
+                                text: "Send Otp",
+                                onClick: () =>
+                                    controller.requestOtp()))
+                      ],
+                    ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  AppButton(
+                    text: "Register Remitter",
+                    onClick: () => controller.senderRegistration(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

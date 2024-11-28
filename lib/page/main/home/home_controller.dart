@@ -308,9 +308,27 @@ class HomeController extends GetxController {
         break;
       case HomeServiceType.moneyTransfer:
         {
-          var dmtType = DmtType.instantPay;
-          Get.toNamed(AppRoute.dmtSearchSenderPage,
-              arguments: {"dmtType": dmtType});
+
+            Get.bottomSheet(DmtOptionDialog(
+              onDmtOne: () {
+                var dmtType = DmtType.instantPay;
+                Get.toNamed(AppRoute.dmtSearchSenderPage,
+                    arguments: {"dmtType": dmtType});
+
+              },
+              onDmtTwo: () {
+                var dmtType = DmtType.dmt2;
+                Get.toNamed(AppRoute.dmtSearchSenderPage,
+                    arguments: {"dmtType": dmtType});
+              },
+            ));
+
+
+
+
+          // var dmtType = DmtType.instantPay;
+          // Get.toNamed(AppRoute.dmtSearchSenderPage,
+          //     arguments: {"dmtType": dmtType});
         }
         break;
       case HomeServiceType.upiTransfer:

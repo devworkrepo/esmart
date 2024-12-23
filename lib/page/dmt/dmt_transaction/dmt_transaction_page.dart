@@ -156,13 +156,15 @@ class _BuildMpinAndRemarkWidget extends GetView<DmtTransactionController> {
                     MPinTextField(
                       controller: controller.mpinController,
                     ),
-                    if (controller.dmtType == DmtType.dmt2)
+                    if (controller.dmtType == DmtType.dmt2 ||
+                        (controller.dmtType == DmtType.dmt3 &&
+                        controller.calculateChargeResponse.isOtp == "1"))
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
                               child: OtpTextField(
-                                maxLength: 4,
+                                maxLength: (controller.dmtType == DmtType.dmt3) ? 6 : 4,
                                 controller: controller.otpController,
                               )),
                           const SizedBox(

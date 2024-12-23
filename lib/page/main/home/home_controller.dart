@@ -321,9 +321,12 @@ class HomeController extends GetxController {
                 Get.toNamed(AppRoute.dmtSearchSenderPage,
                     arguments: {"dmtType": dmtType});
               },
+              onDmtThree: (){
+                var dmtType = DmtType.dmt3;
+                Get.toNamed(AppRoute.dmtSearchSenderPage,
+                    arguments: {"dmtType": dmtType});
+              },
             ));
-
-
 
 
           // var dmtType = DmtType.instantPay;

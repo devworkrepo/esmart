@@ -271,4 +271,53 @@ class DmtRepoImpl extends DmtRepo {
     var response = await client.post("/KycDmtStatus");
     return CommonResponse.fromJson(response.data);
   }
+
+  @override
+  Future<DmtTransactionResponse> dmt3Transaction(Map<String, String> data, CancelToken? cancelToken) async {
+    var response = await client.post("/DMT3Transaction", data: data,cancelToken: cancelToken);
+    return DmtTransactionResponse.fromJson(response.data);
+  }
+
+  @override
+  Future<SenderInfo> searchSenderDmt3(Map<String, String> data) async {
+    var response = await client.post("DMT3SearchRemitter", data: data);
+    return SenderInfo.fromJson(response.data);
+  }
+
+  @override
+  Future<CommonResponse> senderRegistration3(Map<String, String> data) async {
+    var response = await client.post(
+        "DMT3RemitterOTP", data: data);
+    return CommonResponse.fromJson(response.data);
+  }
+
+  @override
+  Future<CalculateChargeResponse> calculateKycCharge3(Map<String, String> data) async {
+    var response = await client.post("CalcDMT3Charges",data: data);
+    return CalculateChargeResponse.fromJson(response.data);
+  }
+
+  @override
+  Future<CommonResponse> sendDmt3TransactionOtp(data) async {
+    var response = await client.post("/DMT3TransactionOTP",data: data);
+    return CommonResponse.fromJson(response.data);
+  }
+
+  @override
+  Future<CommonResponse> verifyDmt3TransactionOtp(data) async {
+    var response = await client.post("/DMT3VerifyTransactionOTP",data: data);
+    return CommonResponse.fromJson(response.data);
+  }
+
+  @override
+  Future<CommonResponse> senderRegistrationOtp3(Map<String, String> data) async {
+    var response = await client.post("/DMT3VerifyRemitterOTP",data: data);
+    return CommonResponse.fromJson(response.data);
+  }
+
+  @override
+  Future<CommonResponse> senderRegistrationKycDmt3(Map<String, String> data) async {
+    var response = await client.post("/DMT3SendereKYC",data: data);
+    return CommonResponse.fromJson(response.data);
+  }
 }

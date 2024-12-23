@@ -12,6 +12,7 @@ class CommonResponse {
   String? ekyccode;
   String? remitterid;
   String? otpcode;
+  String? verifycode;
 
 
   CommonResponse();
@@ -29,6 +30,7 @@ class CommonResponse {
     ekyccode  = json["ekyccode"];
     remitterid  = json["remitterid"];
     otpcode  = json["otpcode"];
+    verifycode  = json["verifycode"];
 
 
   }

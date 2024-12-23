@@ -39,6 +39,7 @@ class AppRoute {
   static const dmtBeneficiaryListPage = "/dmt-beneficiary_list-page";
   static const dmtSenderAddPage = "/dmt-sender-add-page";
   static const dmtSenderAddPage2 = "/dmt-sender-add-page-2";
+  static const dmtSenderAddPage3 = "/dmt-sender-add-page-3";
   static const dmtSenderAddPageKyc = "/dmt-sender-add-page-kyc";
   static const dmtBeneficiaryAddPage = "/dmt-beneficiary-add-page";
   static const dmtTransactionPage = "/dmt-transaction-page";

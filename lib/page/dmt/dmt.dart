@@ -1,7 +1,8 @@
 enum DmtType{
   instantPay,
   payout,
-  dmt2
+  dmt2,
+  dmt3
 }
 
 
@@ -12,6 +13,9 @@ class DmtHelper{
     }
     else  if (dmtType == DmtType.dmt2) {
       return "Money Transfer 2";
+    }
+    else  if (dmtType == DmtType.dmt3) {
+      return "Money Transfer 3";
     }
     else if(dmtType == DmtType.payout){
       return "Payout Transfer";

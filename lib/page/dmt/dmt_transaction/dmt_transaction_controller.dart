@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:esmartbazaar/model/common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:esmartbazaar/data/app_pref.dart';
@@ -50,6 +51,7 @@ class DmtTransactionController extends GetxController
   String isView = Get.arguments["isView"];
 
   var otpcode = "";
+  var isDmt3OtpVerified = false;
 
   @override
   void onInit() {
@@ -123,14 +125,49 @@ class DmtTransactionController extends GetxController
       return;
     }
 
-    if(dmtType == DmtType.dmt2 && otpcode.isEmpty){
+    if (dmtType == DmtType.dmt2 && otpcode.isEmpty) {
       StatusDialog.alert(title: "Please send otp, otp code is not fetched yet");
       return;
     }
 
+    else if (dmtType == DmtType.dmt3 && calculateChargeResponse.isOtp == "1") {
+
+      if(otpcode.isEmpty){
+        StatusDialog.alert(title: "Please send otp, otp code is not fetched yet");
+        return;
+      }
+
+      StatusDialog.transaction();
+      if(!isDmt3OtpVerified){
+        final params = {
+          "transno" : calculateChargeResponse.transno,
+          "amount" : calculateChargeResponse.amount,
+          "mobileno" : sender.senderNumber,
+          "otp" : otpController.text,
+          "otpcode" : otpcode,
+        };
+        CommonResponse otpVerifyResponse = await repo.verifyDmt3TransactionOtp(params);
+
+        if(otpVerifyResponse.code ==1){
+          otpcode = otpVerifyResponse.otpcode ?? "";
+          isDmt3OtpVerified = true;
+        }
+        else{
+          Get.back();
+          StatusDialog.alert(title: otpVerifyResponse.message);
+          return;
+        }
+      }
+    }
+    else{
+      StatusDialog.transaction();
+    }
+
+
+
     try {
       cancelToken = CancelToken();
-      StatusDialog.transaction();
+
 
       DmtTransactionResponse response;
 
@@ -138,14 +175,19 @@ class DmtTransactionController extends GetxController
         case DmtType.instantPay:
           if ((sender.isKycVerified ?? false)) {
             response =
-            await repo.kycTransaction(_transactionParam(), cancelToken);
+                await repo.kycTransaction(_transactionParam(), cancelToken);
           } else {
             response =
-            await repo.nonKycTransaction(_transactionParam(), cancelToken);
+                await repo.nonKycTransaction(_transactionParam(), cancelToken);
           }
           break;
         case DmtType.dmt2:
-          response = await repo.dmt2Transaction(_transactionParam(), cancelToken);
+          response =
+              await repo.dmt2Transaction(_transactionParam(), cancelToken);
+          break;
+        case DmtType.dmt3:
+          response =
+              await repo.dmt3Transaction(_transactionParam(), cancelToken);
           break;
         case DmtType.payout:
           response =
@@ -168,35 +210,35 @@ class DmtTransactionController extends GetxController
       await appPreference.setIsTransactionApi(true);
       Get.back();
       Get.dialog(ExceptionPage(
-            error: e,
-            data: {
-              "param": _transactionParam(),
-              "transaction_type": "DMT : ${dmtType.name.toString()}"
-            },
-
-          ));
+        error: e,
+        data: {
+          "param": _transactionParam(),
+          "transaction_type": "DMT : ${dmtType.name.toString()}"
+        },
+      ));
     }
   }
 
   _transactionParam() {
     final param = {
       "beneid": beneficiary.id ?? "",
-    "transfer_amt": amount,
-    "mpin": Encryption.encryptMPIN(mpinController.text),
-    "remark": (remarkController.text.isEmpty)
-    ? "Transaction"
-        : remarkController.text,
-    "calcid": calculateChargeResponse.calcId.toString(),
-    "trans_type": (transferType == DmtTransferType.imps) ? "IMPS" : "NEFT",
-    "latitude": position!.latitude.toString(),
-    "longitude": position!.longitude.toString(),
-  };
-    
+      "transfer_amt": amount,
+      "mpin": Encryption.encryptMPIN(mpinController.text),
+      "remark": (remarkController.text.isEmpty)
+          ? "Transaction"
+          : remarkController.text,
+      "calcid": calculateChargeResponse.calcId.toString(),
+      "trans_type": (transferType == DmtTransferType.imps) ? "IMPS" : "NEFT",
+      "latitude": position!.latitude.toString(),
+      "longitude": position!.longitude.toString(),
+    };
+
     param.addIf(dmtType == DmtType.dmt2, "otp", otpController.text);
     param.addIf(dmtType == DmtType.dmt2, "otpcode", otpcode);
+    param.addIf(dmtType == DmtType.dmt3, "isotp", calculateChargeResponse.isOtp ?? "");
+    param.addIf(dmtType == DmtType.dmt3, "otpcode", (calculateChargeResponse.isOtp == "1") ? otpcode : "NA");
 
     return param;
-    
   }
 
   _calculateTransactionCharge() async {
@@ -215,19 +257,29 @@ class DmtTransactionController extends GetxController
       CalculateChargeResponse response;
 
       var isDmtKyc = false;
-      if(sender.isKycVerified == true){
-        if(transferType == DmtTransferType.imps){
+      if (sender.isKycVerified == true) {
+        if (transferType == DmtTransferType.imps) {
           isDmtKyc = sender.iskycimps ?? false;
-        }
-        else if(transferType == DmtTransferType.neft){
+        } else if (transferType == DmtTransferType.neft) {
           isDmtKyc = sender.iskycneft ?? false;
         }
       }
 
-      if(dmtType == DmtType.dmt2){
+      if (dmtType == DmtType.dmt2) {
         response = await repo.calculateKycCharge2(param);
       }
-     else if (dmtType == DmtType.instantPay) {
+      if (dmtType == DmtType.dmt3) {
+        response = await repo.calculateKycCharge3(param);
+        if (response.code == 1) {
+          response.chargeList = [
+            CalculateCharge.fromJson({
+              "charge": response.charge,
+              "amount": response.amount,
+              "srno": "1"
+            })
+          ];
+        }
+      } else if (dmtType == DmtType.instantPay) {
         if (isDmtKyc) {
           response = await repo.calculateKycCharge(param);
         } else {
@@ -240,12 +292,23 @@ class DmtTransactionController extends GetxController
       calculateChargeResponse = response;
 
       if (response.code == 1) {
+        if (dmtType == DmtType.dmt3) {
+          response.chargeList = [
+            CalculateCharge.fromJson({
+              "charge": response.charge,
+              "amount": response.amount,
+              "srno": 1
+            })
+          ];
+        }
+
         calculateChargeResponseObs.value = Resource.onSuccess(response);
       } else {
         StatusDialog.failure(title: response.message)
             .then((value) => Get.back());
       }
     } catch (e) {
+      print(e);
       calculateChargeResponseObs.value = Resource.onFailure(e);
       Get.dialog(ExceptionPage(error: e));
     }
@@ -269,13 +332,23 @@ class DmtTransactionController extends GetxController
     super.dispose();
   }
 
-  requestOtp()  async {
-
+  requestOtp() async {
     StatusDialog.progress();
     try {
-      var response = await repo.sendDmt2TransactionOtp({
-        "mobileno": sender.senderNumber ?? "",
-      });
+      CommonResponse response;
+      if (dmtType == DmtType.dmt2) {
+        response = await repo.sendDmt2TransactionOtp({
+          "mobileno": sender.senderNumber ?? "",
+        });
+      } else if (dmtType == DmtType.dmt3) {
+        response = await repo.sendDmt3TransactionOtp({
+          "mobileno": sender.senderNumber ?? "",
+          "transno": calculateChargeResponse.transno ?? "",
+          "amount": calculateChargeResponse.amount ?? "",
+        });
+      } else {
+        throw ("Dmt Type not mentioned for send transaction otp");
+      }
 
       Get.back();
       if (response.code == 1) {
@@ -289,6 +362,5 @@ class DmtTransactionController extends GetxController
       Get.back();
       Get.dialog(ExceptionPage(error: e));
     }
-
   }
 }

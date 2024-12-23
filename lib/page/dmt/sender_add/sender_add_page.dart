@@ -15,7 +15,7 @@ class SenderAddPage2 extends GetView<SenderAddController2> {
     Get.put(SenderAddController2());
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Register Sender"),
+        title: const Text("Register Sender - DMT 2"),
       ),
       body: _buildSenderAddForm(),
     );

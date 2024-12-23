@@ -14,6 +14,7 @@ import '../../model/money_request/bank_dertail.dart';
 abstract class DmtRepo {
   Future<SenderInfo> searchSender(Map<String, String> data);
   Future<SenderInfo> searchSenderDmt2(Map<String, String> data);
+  Future<SenderInfo> searchSenderDmt3(Map<String, String> data);
   Future<BondResponse> fetchPayoutBond();
   Future<AccountSearchResponse> searchAccount(Map<String, String> data);
   Future<AccountSearchResponse> searchAccountDmt2(Map<String, String> data);
@@ -31,16 +32,20 @@ abstract class DmtRepo {
 
   Future<CommonResponse> senderRegistration(Map<String, String> data);
   Future<CommonResponse> senderRegistration2(Map<String, String> data);
+  Future<CommonResponse> senderRegistration3(Map<String, String> data);
 
   Future<CommonResponse> senderRegistrationOtp(Map<String, String> data);
   Future<CommonResponse> senderRegistrationOtp2(Map<String, String> data);
+  Future<CommonResponse> senderRegistrationOtp3(Map<String, String> data);
   Future<CommonResponse> senderRegistrationKyc(Map<String, String> data);
+  Future<CommonResponse> senderRegistrationKycDmt3(Map<String, String> data);
 
   Future<CalculateChargeResponse> calculateNonKycCharge(
       Map<String, String> data);
 
   Future<CalculateChargeResponse> calculateKycCharge(Map<String, String> data);
   Future<CalculateChargeResponse> calculateKycCharge2(Map<String, String> data);
+  Future<CalculateChargeResponse> calculateKycCharge3(Map<String, String> data);
 
   Future<CalculateChargeResponse> calculatePayoutCharge(
       Map<String, String> data);
@@ -66,6 +71,8 @@ abstract class DmtRepo {
 
   Future<DmtTransactionResponse> dmt2Transaction(
       Map<String, String> data, CancelToken? cancelToken);
+  Future<DmtTransactionResponse> dmt3Transaction(
+      Map<String, String> data, CancelToken? cancelToken);
 
   Future<DmtTransactionResponse> payoutTransaction(
       Map<String, String> data, CancelToken? cancelToken);
@@ -85,6 +92,8 @@ abstract class DmtRepo {
 
   Future<CommonResponse> senderKycSendOtp(data);
   Future<CommonResponse> sendDmt2TransactionOtp(data);
+  Future<CommonResponse> sendDmt3TransactionOtp(data);
+  Future<CommonResponse> verifyDmt3TransactionOtp(data);
   Future<CommonResponse> senderKycReSendOtp(data);
   Future<CommonResponse> senderKycVerifyOtp(data);
   Future<CommonResponse> checkDmtKycStatus();

@@ -3,6 +3,10 @@ class CalculateChargeResponse {
   late String message;
   late String status;
   String? calcId;
+  String? isOtp;
+  String? charge;
+  String? amount;
+  String? transno;
   List<CalculateCharge>? chargeList;
 
   CalculateChargeResponse();
@@ -12,6 +16,10 @@ class CalculateChargeResponse {
     status = json["status"];
     message = json["message"];
     calcId = json["calcid"];
+    isOtp = json["isotp"];
+    charge = json["charge"];
+    amount= json["amount"];
+    transno= json["transno"];
 
     if (json["calclists"] != null) {
       chargeList = List<CalculateCharge>.from(

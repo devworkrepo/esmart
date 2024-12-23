@@ -28,6 +28,7 @@ class SenderInfo{
         String? senderName;
         String? senderNumber;
         String? senderId;
+        String? tokencode;
         String? upi_limit;
         String? perentry_limit;
 
@@ -71,6 +72,7 @@ class SenderInfo{
                 isekyc = json["isekyc"] ?? false;
                 first_name = json["first_name"] ?? "";
                 last_name = json["last_name"] ?? "";
+                tokencode = json["tokencode"] ?? "";
 
 
         }

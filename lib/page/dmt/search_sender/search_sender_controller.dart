@@ -109,9 +109,20 @@ class DmtSearchSenderController extends GetxController {
           : numberController.text.toString();
       final data = {"mobileno": mobile};
 
-      SenderInfo sender = (dmtType == DmtType.instantPay)
-          ? await repo.searchSender(data)
-          : await repo.searchSenderDmt2(data);
+      // SenderInfo sender = (dmtType == DmtType.instantPay)
+      //     ? await repo.searchSender(data)
+      //     : await repo.searchSenderDmt2(data);
+
+      SenderInfo sender;
+      if(dmtType == DmtType.instantPay){
+        sender = await repo.searchSender(data);
+      }
+      else if(dmtType == DmtType.dmt3){
+        sender = await repo.searchSenderDmt3(data);
+      }
+      else{
+        sender = await repo.searchSenderDmt2(data);
+      }
 
       sender.showNonKycDetail = sender.isKycVerified == false;
 
@@ -152,7 +163,21 @@ class DmtSearchSenderController extends GetxController {
               _searchSender();
             }
           });
-        } else {
+        }
+        else if(dmtType == DmtType.dmt3){
+          final args = {
+            "mobile": mobile,
+            "dmtType": dmtType,
+            "sender": sender
+          };
+          Get.toNamed(AppRoute.dmtSenderAddPage3, arguments: args)
+              ?.then((value) {
+            if (value != null) {
+              _searchSender();
+            }
+          });
+        }
+        else {
           if (sender.isekyc ?? false) {
             final args = {
               "mobile": mobile,
@@ -165,7 +190,8 @@ class DmtSearchSenderController extends GetxController {
                 _searchSender();
               }
             });
-          } else {
+          }
+          else {
             final args = {
               "mobile": mobile,
               "dmtType": dmtType,

@@ -41,6 +41,9 @@ class UserDetail {
   bool? is_cms;
   bool? isQR;
   bool? isUpi;
+  bool? isdmt1;
+  bool? isdmt2;
+  bool? isdmt3;
 
 
 
@@ -89,6 +92,9 @@ class UserDetail {
     isQR = json['isQR'];
     isUpi = json['isUPI'];
     isAEPS_F = json['isAEPS_F'];
+    isdmt1 = json['isdmt1'];
+    isdmt2 = json['isdmt2'];
+    isdmt3 = json['isdmt3'];
   }
 
   Map<String, dynamic> toJson() {
@@ -133,6 +139,9 @@ class UserDetail {
     data ['isQR']=isQR;
     data ['isUpi']=isUpi;
     data ['isAEPS_F']=isAEPS_F;
+    data ['isdmt1']=isdmt1;
+    data ['isdmt2']=isdmt2;
+    data ['isdmt3']=isdmt3;
     return data;
   }
 

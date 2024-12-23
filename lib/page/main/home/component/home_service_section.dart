@@ -171,11 +171,17 @@ List<HomeServiceItem> _homeServiceList(UserDetail user) {
   var isMatmCredo = user.is_matm_credo ?? false;
   var isMposCredo = user.is_mpos_credo ?? false;
   var isUpi = user.isUpi ?? false;
+  var isDmt1 = user.isdmt1 ?? false;
+  var isDmt2 = user.isdmt2 ?? false;
+  var isDmt3 = user.isdmt3 ?? false;
 
   List<HomeServiceItem> itemList = [];
 
-  itemList.add(HomeServiceItem(
+
+  if(isDmt1 || isDmt2 || isDmt3) {
+    itemList.add(HomeServiceItem(
       "Money Transfer", "price", HomeServiceType.moneyTransfer));
+  }
 
   if (user.isPayout.orFalse()) {
     itemList.add(HomeServiceItem(

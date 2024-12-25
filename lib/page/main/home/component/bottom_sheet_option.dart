@@ -176,6 +176,41 @@ class DmtOptionDialog extends StatelessWidget {
   }
 }
 
+
+class PidCaptureOptionDialog extends StatelessWidget {
+  final VoidCallback onFingerprint;
+  final VoidCallback onFaceAuth;
+
+
+
+  const PidCaptureOptionDialog(
+      {Key? key, required this.onFingerprint, required this.onFaceAuth})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+
+
+    return _BaseOptionDialogWidget(
+      title: "Capture Type",
+      option: [
+      _BaseOption(
+            title: "Use Fingerprint",
+            onClick: onFingerprint,
+            svgName: "fingerprint_scan"),
+       _BaseOption(
+            title: "Use Face Auth",
+            onClick: onFaceAuth,
+            svgName: "ekyc_person",
+       ),
+
+      ],
+      isSvg: false,
+    );
+  }
+}
+
+
 class MatmOptionDialog extends StatelessWidget {
   final VoidCallback matmClick;
   final VoidCallback mposClick;

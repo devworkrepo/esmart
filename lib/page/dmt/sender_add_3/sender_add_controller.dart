@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:esmartbazaar/data/repo/home_repo.dart';
 import 'package:esmartbazaar/data/repo_impl/home_repo_impl.dart';
+import 'package:esmartbazaar/page/main/home/component/bottom_sheet_option.dart';
 import 'package:esmartbazaar/util/mixin/transaction_helper_mixin.dart';
+import 'package:esmartbazaar/util/pid_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -98,8 +100,6 @@ class SenderAddController3 extends GetxController with TransactionHelperMixin {
   }
 
   captureFingerprint() {
-
-
     Get.dialog(AepsRdServiceDialog(
       onClick: (rdServicePackageUrl) async {
         try {
@@ -119,8 +119,28 @@ class SenderAddController3 extends GetxController with TransactionHelperMixin {
         }
       },
     ),);
-
   }
+
+  captureFaceAuth() async {
+    try {
+      var result = await NativeCall.launchResultForFaceAuth(
+          {
+            "pidOption" : PidUtil.wadhDataDmt,
+          });
+      var xmlResult = XmlPidParser.parse(result);
+      _onRdServiceResult(xmlResult);
+
+    } on PlatformException catch (e) {
+      var description =
+          "${(e.message) ?? "Capture failed, please try again! "} ${(e.details ?? "")}";
+
+      Get.snackbar("Aeps Capture failed", description,
+          backgroundColor: Colors.red, colorText: Colors.white);
+    } catch (e) {
+      Get.dialog(ExceptionPage(error: e));
+    }
+  }
+
 
   _onRdServiceResult(Map<String,String> data) async {
 
@@ -181,7 +201,7 @@ class SenderAddController3 extends GetxController with TransactionHelperMixin {
     }catch(e){
       Get.back();
       final formattedAuthParams = const JsonEncoder.withIndent('  ').convert(authParams);
-      StatusDialog.alert(title: formattedAuthParams);
+      StatusDialog.alert(title: e.toString() + "\n\nrequest data \n\n"+formattedAuthParams);
     }
   }
 
@@ -192,6 +212,13 @@ class SenderAddController3 extends GetxController with TransactionHelperMixin {
     aadhaarNumberController.dispose();
     otpController.dispose();
     super.dispose();
+  }
+
+  capturePidData() {
+    Get.bottomSheet(PidCaptureOptionDialog(
+      onFingerprint: captureFingerprint,
+      onFaceAuth: captureFaceAuth
+    ));
   }
 }
 

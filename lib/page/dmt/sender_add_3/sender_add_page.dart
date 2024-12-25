@@ -101,7 +101,7 @@ class SenderAddPage3 extends GetView<SenderAddController3> {
 
                   AppButton(
                     text: "Capture and Proceed Kyc",
-                    onClick: () =>controller.captureFingerprint(),
+                    onClick: () =>controller.capturePidData(),
                   ),
 
                 ],

@@ -268,7 +268,7 @@ class DmtTransactionController extends GetxController
       if (dmtType == DmtType.dmt2) {
         response = await repo.calculateKycCharge2(param);
       }
-      if (dmtType == DmtType.dmt3) {
+      else if (dmtType == DmtType.dmt3) {
         response = await repo.calculateKycCharge3(param);
         if (response.code == 1) {
           response.chargeList = [
@@ -279,13 +279,15 @@ class DmtTransactionController extends GetxController
             })
           ];
         }
-      } else if (dmtType == DmtType.instantPay) {
+      }
+      else if (dmtType == DmtType.instantPay) {
         if (isDmtKyc) {
           response = await repo.calculateKycCharge(param);
         } else {
           response = await repo.calculateNonKycCharge(param);
         }
-      } else {
+      }
+      else {
         response = await repo.calculatePayoutCharge(param);
       }
 

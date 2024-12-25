@@ -10,6 +10,7 @@ import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import app.esmartbazaar.com.R
 import app.esmartbazaar.com.AppConstant.AEPS_SERVICE_METHOD_NAME
+import app.esmartbazaar.com.AppConstant.LAUNCH_FACE_CAPTURE
 import app.esmartbazaar.com.AppConstant.BLUETOOTH_CHECK_ENABLE
 import app.esmartbazaar.com.AppConstant.BLUETOOTH_CHECK_PAIRED
 import app.esmartbazaar.com.AppConstant.CREDO_PAY_METHOD_NAME
@@ -28,6 +29,14 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 import java.util.*
+
+import android.util.Base64
+import java.security.MessageDigest
+import kotlin.random.Random
+
+import android.content.pm.PackageManager
+import android.os.Bundle
+import android.widget.Toast
 
 
 class MainActivity : FlutterFragmentActivity() {
@@ -50,6 +59,9 @@ class MainActivity : FlutterFragmentActivity() {
             when {
                 call.method.equals(AEPS_SERVICE_METHOD_NAME) -> {
                     captureAepsPidData(call)
+                }
+                call.method.equals(LAUNCH_FACE_CAPTURE) -> {
+                    captureFaceCapturePidData(call)
                 }
                 call.method.equals(MATM_SERVICE_METHOD_NAME) -> {
                     tramoMatm(call)
@@ -234,6 +246,72 @@ class MainActivity : FlutterFragmentActivity() {
         }
     }
 
+    private fun captureFaceCapturePidData(call: MethodCall) {
+        val wadh = call.argument<String?>("wadh") ?: ""
+        try {
+            val intent = Intent("in.gov.uidai.rdservice.face.CAPTURE")
+            intent.putExtra("request", getPidOption(wadh))
+            startActivityForResult(intent, AppConstant.FACE_CAPTURE_RESULT_CODE)
+            return;
+        }catch (e : Exception){
+            redirectToPlayStore()
+        }
+
+    }
+
+    private fun getPidOption(wadh : String): String {
+        val start = 10000000
+        val end = 99999999
+        val number = Random(System.nanoTime()).nextInt(end - start + 1) + start
+        val txnId = number.toString()
+        val language = "en"
+        val buildType = "P"
+        val purpose = "auth"
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<PidOptions ver=\"1.0\" env=\"${buildType}\">\n" +
+                "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"$wadh\" posh=\"\" />\n" +
+                "   <CustOpts>\n" +
+                "      <Param name=\"txnId\" value=\"${txnId}\"/>\n" +
+                "      <Param name=\"purpose\" value=\"$purpose\"/>\n" +
+                "      <Param name=\"language\" value=\"$language\"/>\n" +
+                "   </CustOpts>\n" +
+                "</PidOptions>"
+
+    }
+//    private fun getWADHValue(): String {
+//        val version = "2.5"
+//        val residentAuthenticationType = "P"
+//        val residentContent = "Y"
+//        val localLanguageIR = "N"
+//        val decryption = "N"
+//        val printFormat = "N"
+//        val plain =
+//            version + residentAuthenticationType + residentContent +
+//                    localLanguageIR + decryption + printFormat
+//
+//        val hash = MessageDigest
+//            .getInstance("SHA-256")
+//            .digest(plain.toByteArray())
+//        return Base64.encodeToString(hash, Base64.NO_WRAP)
+//    }
+
+    private fun redirectToPlayStore() {
+        val packageName = "in.gov.uidai.facerd"
+        val playStoreIntent =
+            Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName"))
+        if (playStoreIntent.resolveActivity(packageManager) != null) {
+            startActivity(playStoreIntent)
+        } else {
+            // Fallback to browser if Play Store is not available
+            val browserIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+            )
+            startActivity(browserIntent)
+        }
+    }
+
+
     private fun captureDmtTwoAuthPidData(call: MethodCall) {
 
         val rdServicePackageUrl = call.argument<String>("packageUrl")
@@ -289,6 +367,11 @@ class MainActivity : FlutterFragmentActivity() {
                     resultCode,
                     data
                 )
+                AppConstant.FACE_CAPTURE_RESULT_CODE -> handleFaceAuthResult(
+                    requestCode,
+                    resultCode,
+                    data
+                )
 
             }
         } else {
@@ -297,6 +380,25 @@ class MainActivity : FlutterFragmentActivity() {
 
         if (requestCode == UPI_PAYMENT_RESULT_CODE) handUpiResult(data, resultCode)
 
+
+    }
+
+    private fun handleFaceAuthResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        val exceptionMessage = "Captured failed, please check biometric device is connected!";
+        val mData = data!!.extras!!.getString("response")
+
+        if (mData != null) {
+            try {
+                result!!.success(mData)
+            } catch (e: java.lang.Exception) {
+                result!!.error("99", exceptionMessage, "parsing failed")
+            }
+        } else
+            result!!.error("99", exceptionMessage, "result is null")
 
     }
 

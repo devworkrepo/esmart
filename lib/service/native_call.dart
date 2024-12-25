@@ -7,6 +7,7 @@ class NativeCall {
   static const _methodChannelName = "app.esmartbazaar.com";
   static const _methodChannel = MethodChannel(_methodChannelName);
   static const _aepsServiceMethodName = "launch_aeps_service";
+  static const _faceCaptureMethodName = "launch_face_capture";
   static const _dmtTwoAuthPidData = "dmt_two_auth_pid_data";
   static const _matmServiceMethodName = "launch_matm_service";
   static const _rdServiceSerialNumber = "rd_service_serial_number";
@@ -44,6 +45,11 @@ class NativeCall {
       Map<String, dynamic> data) async {
     data.addAll({"provider" : "common"});
     String result = await _methodChannel.invokeMethod(_aepsServiceMethodName, data);
+    return result;
+  }
+
+  static Future<String> launchResultForFaceAuth(Map<String, dynamic> data) async {
+    String result = await _methodChannel.invokeMethod(_faceCaptureMethodName, data);
     return result;
   }
 

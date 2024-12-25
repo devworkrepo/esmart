@@ -5,6 +5,7 @@ object AppConstant {
 
     const val METHOD_CHANNEL = "app.esmartbazaar.com"
     const val AEPS_SERVICE_METHOD_NAME = "launch_aeps_service"
+    const val LAUNCH_FACE_CAPTURE = "launch_face_capture"
     const val RD_SERVICE_SERIAL_NUMBER = "rd_service_serial_number"
     const val AEPS_TRAMO_RESULT_CODE = 1000
     const val AEPS_COMMON_RESULT_CODE = 2000
@@ -21,6 +22,7 @@ object AppConstant {
     const val UPI_PAYMENT = "upi_payment"
     const val DMT_TWO_AUTH_PID_DATA = "dmt_two_auth_pid_data"
     const val DMT_TWO_AUTH_PID_DATA_REQUEST_CODE = 2000
+    const val FACE_CAPTURE_RESULT_CODE = 1800
 
 
 

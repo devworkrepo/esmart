@@ -115,51 +115,53 @@ class _StatusDialog extends StatelessWidget {
         backPress: backPress,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Card(
-                elevation: 0,
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                  Radius.circular(100.0),
-                )),
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Icon(
-                    icon,
-                    size: 52,
-                    color: color,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Card(
+                  elevation: 0,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                    Radius.circular(100.0),
+                  )),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Icon(
+                      icon,
+                      size: 52,
+                      color: color,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                style: Get.textTheme.caption
-                    ?.copyWith(fontWeight: FontWeight.w500, fontSize: 14, color: color),
-              ),
-              const SizedBox(height: 16),
-
-              ElevatedButton(
-                style:  ButtonStyle(
-                    shape:
-                    MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular((100)),
-                        ))
+                const SizedBox(height: 8),
+                SelectableText(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: Get.textTheme.caption
+                      ?.copyWith(fontWeight: FontWeight.w500, fontSize: 14, color: color),
                 ),
-                  onPressed: () {
-                    if (proceed != null) {
-                      Get.back();
-                      proceed!();
-                    } else {
-                      Get.back();
-                    }
-                  },
-                  child: Text(buttonText ?? "       Done       "))
-            ],
+                const SizedBox(height: 16),
+            
+                ElevatedButton(
+                  style:  ButtonStyle(
+                      shape:
+                      MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular((100)),
+                          ))
+                  ),
+                    onPressed: () {
+                      if (proceed != null) {
+                        Get.back();
+                        proceed!();
+                      } else {
+                        Get.back();
+                      }
+                    },
+                    child: Text(buttonText ?? "       Done       "))
+              ],
+            ),
           ),
         ));
   }
